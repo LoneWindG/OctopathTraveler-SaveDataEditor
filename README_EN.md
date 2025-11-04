@@ -5,7 +5,11 @@
 [![GPLv3 license](https://img.shields.io/github/license/LonelyWindG/OctopathTraveler-SavaDataEditor?style=for-the-badge&color=blue)](https://github.com/LonelyWindG/OctopathTraveler-SavaDataEditor/blob/master/LICENSE)
 
 ## Language
-[日本語](README_JA.md) [中文](README.md)
+* READEME: [日本語](README_JA.md) [中文](README.md)
+* Supported languages: English, Simplified Chinese, Japanese (partial support only)
+  * Default display is based on system language; unsupported languages ​​will be displayed as English.
+  * Force display language: Create a shortcut and add "-language=language encoding" (a space is required before the hyphen) to the file path in the target field.
+    * Supported language encodings (case-insensitive): en (any encoding starting with en, displays in English), zh-CN/zh_CN (displays in Simplified Chinese), ja-JP/ja_jp (displays in Japanese).
 
 ## Overview
 Available for Steam, Xbox PC, Nintendo Switch, etc.
