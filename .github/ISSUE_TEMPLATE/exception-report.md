@@ -1,6 +1,7 @@
 ---
 name: Exception report
-about: Create a report to help us improve
+about: If you see a "Program Exception" window, please use this template to submit
+  the issue.
 title: ''
 labels: bug
 assignees: ''
