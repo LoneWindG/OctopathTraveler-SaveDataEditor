@@ -12,7 +12,11 @@
 
 ## 语言
 
-[日本語](README_JA.md) [English](README_EN.md)
+* READEME: [日本語](README_JA.md)    [English](README_EN.md)
+* 程序支持语言: 英语, 简体中文, 日语（仅部分支持）
+  * 默认根据系统语言显示, 不支持的语言会以English显示
+  * 强制指定显示语言的方式: 创建快捷方式, 在目标栏文件路径后添加" -language=语言编码"(-前需要有空格)
+    * 支持的语言编码(不限大小写): en(以en开头的任意编码, 以英语显示), zh-CN/zh_CN(以简体中文显示), ja-JP/ja_jp(以日语显示)
 
 ## 游戏官网
 
