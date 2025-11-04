@@ -1,8 +1,9 @@
-using MiniExcelLibs;
-using OctopathTraveler.Properties;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Resources;
+using MiniExcelLibs;
+using OctopathTraveler.Properties;
 
 namespace OctopathTraveler
 {
@@ -85,8 +86,17 @@ namespace OctopathTraveler
             bool isSpecificCulture = culture != null && !culture.Name.StartsWith("en", System.StringComparison.OrdinalIgnoreCase);
             if (embedded)
             {
-                var resourceSet = Resources.ResourceManager.GetResourceSet(isSpecificCulture && culture != null ? culture : CultureInfo.InvariantCulture, true, false);
-                LoadedInfoFile = "Info Excel Path: Embedded Resource, Language: en";
+                ResourceSet? resourceSet;
+                if (isSpecificCulture && culture != null)
+                {
+                    resourceSet = Resources.ResourceManager.GetResourceSet(culture, true, false);
+                    LoadedInfoFile = $"Info Excel: Embedded Resource, Language: {culture.NativeName}[{culture.Name}]";
+                }
+                else
+                {
+                    resourceSet = Resources.ResourceManager.GetResourceSet(CultureInfo.InvariantCulture, true, false);
+                    LoadedInfoFile = "Info Excel: Embedded Resource, Language: English [Default]";
+                }
                 return resourceSet == null ? null : resourceSet.GetObject("InfoExcel") as byte[];
             }
             else if (isSpecificCulture && culture != null)

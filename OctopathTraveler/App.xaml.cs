@@ -16,13 +16,14 @@ namespace OctopathTraveler
         {
             Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
 
+            string? language = null;
             for (int i = 0; i < e.Args.Length; i++)
             {
                 string arg = e.Args[i];
                 Trace.WriteLine($"Startup arg[{i}]: {arg}");
                 if (arg.StartsWith("-language="))
                 {
-                    SetLanguage(arg["-language=".Length..]);
+                    language = arg["-language=".Length..];
                     continue;
                 }
 
@@ -31,38 +32,43 @@ namespace OctopathTraveler
                     SaveData.IsReadonlyMode = true;
                 }
             }
+            SetLanguage(language ?? CultureInfo.CurrentUICulture.Name);
         }
 
         private static void SetLanguage(string language)
         {
+            if (string.IsNullOrEmpty(language) || CultureInfo.CurrentUICulture.Name == language)
+                return;
+
+            string currentName = CultureInfo.CurrentUICulture.Name.Replace("_", "_").ToLower();
+            language = language.Replace("_", "-").ToLower();
+            if (currentName == language)
+                return;
+
             try
             {
                 CultureInfo cultureInfo;
-                language = language.ToLower();
-                switch (language)
+                if (language.StartsWith("en", StringComparison.OrdinalIgnoreCase))
                 {
-                    case "zh-cn":
-                    case "zh_cn":
-                        cultureInfo = CultureInfo.GetCultureInfo("zh-CN");
-                        break;
-                    case "ja-jp":
-                    case "ja_jp":
-                        cultureInfo = CultureInfo.GetCultureInfo("ja-JP");
-                        break;
-                    case "en-us":
-                    case "en_us":
-                        cultureInfo = CultureInfo.GetCultureInfo("en-US");
-                        break;
-                    default:
-                        if (language.StartsWith("en"))
-                        {
-                            cultureInfo = CultureInfo.GetCultureInfo("en-US");
-                            break;
-                        }
-                        return;
+                    cultureInfo = CultureInfo.GetCultureInfo("en");
                 }
+                else if (language.StartsWith("zh", StringComparison.OrdinalIgnoreCase))
+                {
+                    cultureInfo = CultureInfo.GetCultureInfo("zh-CN");
+                }
+                else if (language.StartsWith("ja", StringComparison.OrdinalIgnoreCase))
+                {
+                    cultureInfo = CultureInfo.GetCultureInfo("ja-JP");
+                }
+                else
+                {
+                    return;
+                }
+                CultureInfo.CurrentCulture = cultureInfo;
                 CultureInfo.CurrentUICulture = cultureInfo;
-                OctopathTraveler.Properties.Resources.Culture = cultureInfo;
+                CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+                CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+                Culture = cultureInfo;
             }
             catch
             {
