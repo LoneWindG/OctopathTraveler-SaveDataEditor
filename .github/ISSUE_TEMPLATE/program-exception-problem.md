@@ -1,5 +1,5 @@
 ---
-name: Exception report
+name: Program Exception problem
 about: If you see a "Program Exception" window, please use this template to submit
   the issue.
 title: ''
