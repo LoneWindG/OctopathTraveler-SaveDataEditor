@@ -61,11 +61,29 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
+        ///   查找类似 Money 的本地化字符串。
+        /// </summary>
+        public static string BacisMoney {
+            get {
+                return ResourceManager.GetString("BacisMoney", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Achievement Progress: (Following data) 的本地化字符串。
         /// </summary>
         public static string BasicAchievementProgress {
             get {
                 return ResourceManager.GetString("BasicAchievementProgress", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 If you want to modify the following data, you may need at least one count to exist. 的本地化字符串。
+        /// </summary>
+        public static string BasicAchievementTip {
+            get {
+                return ResourceManager.GetString("BasicAchievementTip", resourceCulture);
             }
         }
         
@@ -102,15 +120,6 @@ namespace OctopathTraveler.Properties {
         public static string BasicHiddenPointCount {
             get {
                 return ResourceManager.GetString("BasicHiddenPointCount", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 You must find at least one hidden point to modify this data. 的本地化字符串。
-        /// </summary>
-        public static string BasicHiddenPointTip {
-            get {
-                return ResourceManager.GetString("BasicHiddenPointTip", resourceCulture);
             }
         }
         
@@ -174,6 +183,24 @@ namespace OctopathTraveler.Properties {
         public static string ButtonSwitchFilter {
             get {
                 return ResourceManager.GetString("ButtonSwitchFilter", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Program Exception 的本地化字符串。
+        /// </summary>
+        public static string ExceptionCaption {
+            get {
+                return ResourceManager.GetString("ExceptionCaption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 An exception occurred during program execution. Please click the &quot;OK&quot; button to report the exception. 的本地化字符串。
+        /// </summary>
+        public static string ExceptionHeader {
+            get {
+                return ResourceManager.GetString("ExceptionHeader", resourceCulture);
             }
         }
         
@@ -436,6 +463,15 @@ namespace OctopathTraveler.Properties {
         public static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Please use the save menu to save the file to the current file (this restriction is to prevent the current file from being overwritten by mistake). 的本地化字符串。
+        /// </summary>
+        public static string MeaageSaveAsSameFileFail {
+            get {
+                return ResourceManager.GetString("MeaageSaveAsSameFileFail", resourceCulture);
             }
         }
         

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+using System;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace OctopathTraveler
@@ -12,22 +8,19 @@ namespace OctopathTraveler
 	{
 		public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			for(uint i = 0; i < Info.Instance().TameMonsters.Count; i++)
+			uint uintValue = (uint)value;
+            for (int i = 0; i < Info.Instance().TameMonsters.Count; i++)
 			{
-				if (Info.Instance().TameMonsters[(int)i].Value == (uint)value) return i;
+				if (Info.Instance().TameMonsters[i].Value == uintValue) return i;
 			}
-
 			return -1;
 		}
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			for (uint i = 0; i < Info.Instance().TameMonsters.Count; i++)
-			{
-				if (Info.Instance().TameMonsters[(int)i].Value == (int)value) return Info.Instance().TameMonsters[(int)i].Value;
-			}
-
-			return 0xFFFFFFFF;
+			int index = (int)value;
+			if (index < 0 || index >= Info.Instance().TameMonsters.Count) return -1;
+			return Info.Instance().TameMonsters[index].Value;
 		}
 	}
 }

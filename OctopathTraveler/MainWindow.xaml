@@ -28,7 +28,7 @@
                 <Button Width="32" Height="32" Click="ToolBarFileOpen_Click" ToolTip="{x:Static properties:Resources.ToolTipOpen}">
                     <Image Source="/Resource/Open.png"/>
                 </Button>
-                <Button Name="TopBar_ButtonSave" Width="32" Height="32" Click="ToolBarFileSave_Click" ToolTip="{x:Static properties:Resources.ToolTipSave}">
+                <Button Width="32" Height="32" Click="ToolBarFileSave_Click" ToolTip="{x:Static properties:Resources.ToolTipSave}">
                     <Image Source="/Resource/Save.png"/>
                 </Button>
                 <Button Width="32" Height="32" Click="MenuItemFileSaveAsJson_Click" ToolTip="{x:Static properties:Resources.ToolTipSaveAsJson}">
@@ -47,7 +47,8 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="22"/>
+                            <ColumnDefinition Width="178"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25"/>
@@ -63,31 +64,35 @@
                         </Grid.RowDefinitions>
                         <Label Content="{x:Static properties:Resources.BasicPlayTime}" VerticalAlignment="Center"/>
                         <Label Grid.Row="1" Content="{x:Static properties:Resources.BasicSaveDate}" VerticalAlignment="Center"/>
-                        <Label Grid.Column="1" Content="{Binding BasicData.PlayTime}" Margin="-4,0,0,0" VerticalAlignment="Center"/>
-                        <Label Grid.Row="1" Grid.Column="1" Content="{Binding BasicData.SaveDate}" Margin="-4,0,0,0" VerticalAlignment="Center"/>
+                        <Label Content="{Binding BasicData.PlayTime}" Margin="196,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
+                        <Label Grid.Row="1" Content="{Binding BasicData.SaveDate}" Margin="196,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
                         <Label Grid.Row="2" Content="{x:Static properties:Resources.BasicMoney}" VerticalAlignment="Center"/>
                         <Label Grid.Row="3" Content="{x:Static properties:Resources.BasicHero}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="2" Grid.Column="2" Text="{Binding BasicData.Money, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
-                        <ComboBox Grid.Row="3" Grid.Column="2" ItemsSource="{Binding Info.CharaNames}" DisplayMemberPath="Name" VerticalContentAlignment="Center"
-                                  SelectedIndex="{Binding BasicData.Hero, Converter={StaticResource HeroIDConverter}}"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BasicData.Money, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Info.CharaNames}" DisplayMemberPath="Name" VerticalContentAlignment="Center"
+                                  SelectedIndex="{Binding BasicData.Hero, Converter={StaticResource HeroIDConverter}}" Grid.ColumnSpan="2"/>
                         <Label Grid.Row="4" VerticalAlignment="Bottom">
-                            <TextBlock FontSize="15" FontWeight="Bold" TextWrapping="Wrap" Text="{x:Static properties:Resources.BasicAchievementProgress}"/>
+                            <TextBlock FontSize="15" TextWrapping="Wrap" Text="{x:Static properties:Resources.BasicAchievementProgress}"/>
                         </Label>
                         <Label Grid.Row="5" Content="{x:Static properties:Resources.BasicBattleCount}" VerticalAlignment="Center"/>
                         <Label Grid.Row="6" Content="{x:Static properties:Resources.BasicEscapeCount}" VerticalAlignment="Center"/>
                         <Label Grid.Row="7" Content="{x:Static properties:Resources.BasicTreasureCount}" VerticalAlignment="Center"/>
-                        <Label Grid.Row="8" VerticalAlignment="Center" ToolTip="" Name="LabelBasicHiddenPointCount">
-                            <TextBlock FontWeight="Bold" Text="{x:Static properties:Resources.BasicHiddenPointCount}"/>
-                        </Label>
+                        <Label Grid.Row="8" Content="{x:Static properties:Resources.BasicHiddenPointCount}"  VerticalAlignment="Center"/>
                         <Label Grid.Row="9" VerticalAlignment="Center" ToolTip="" Name="LabelBasicItemCount">
                             <TextBlock FontWeight="Bold" Text="{x:Static properties:Resources.BasicItemCount}"/>
                         </Label>
-                        <TextBox Grid.Row="5" Grid.Column="2" Text="{Binding BasicData.BattleCount, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
-                        <TextBox Grid.Row="6" Grid.Column="2" Text="{Binding BasicData.EscapeCount, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
-                        <TextBox Grid.Row="7" Grid.Column="2" Text="{Binding BasicData.TreasureCount, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
-                        <TextBox Grid.Row="8" Grid.Column="2" Text="{Binding BasicData.HiddenPointCount, UpdateSourceTrigger=PropertyChanged}"
-                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistHiddenPointCount}"/>
-                        <Label Grid.Row="9" Grid.Column="2" Content="{Binding BasicData.ItemCount}" Margin="-4,0,0,0"/>
+                        <Label Grid.Row="4" Margin="196,0,-300,0" VerticalContentAlignment="Bottom" Grid.ColumnSpan="3">
+                            <TextBlock TextWrapping="WrapWithOverflow" Text="{x:Static properties:Resources.BasicAchievementTip}"/>
+                        </Label>
+                        <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding BasicData.BattleCount, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistBattleCount}" Grid.ColumnSpan="2"/>
+                        <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding BasicData.EscapeCount, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistEscapeCount}" Grid.ColumnSpan="2"/>
+                        <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding BasicData.TreasureCount, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistTreasureCount}" Grid.ColumnSpan="2"/>
+                        <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding BasicData.HiddenPointCount, UpdateSourceTrigger=PropertyChanged}"
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistHiddenPointCount}" Grid.ColumnSpan="2"/>
+                        <Label Grid.Row="9" Content="{Binding BasicData.ItemCount}" Margin="196,0,0,0" Grid.ColumnSpan="3"/>
                     </Grid>
                 </TabItem>
                 <TabItem Header="{x:Static properties:Resources.TabItemCharacter}">
@@ -333,9 +338,11 @@
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <CheckBox Content="{Binding ID}" IsChecked="{Binding Visit}" Width="50"/>
-                                    --><!--<Label>
+                                    -->
+                    <!--<Label>
                                         <TextBlock Text="{Binding Name}" Foreground="#D9D2E9"/>
-                                    </Label>--><!--
+                                    </Label>-->
+                    <!--
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

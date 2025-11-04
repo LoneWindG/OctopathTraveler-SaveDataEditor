@@ -1,20 +1,20 @@
-﻿using System.Linq;
+using System.Linq;
 
 namespace OctopathTraveler
 {
 	static class Util
 	{
-		public static void WriteNumber(uint address, uint size, uint value, uint min, uint max)
+		public static void WriteNumber(uint? address, uint size, uint value, uint min, uint max)
 		{
 			if (value < min) value = min;
 			if (value > max) value = max;
 			SaveData.Instance().WriteNumber(address, size, value);
 		}
 
-		public static uint FindFirstAddress(string name, uint index)
+		public static uint? FindFirstAddress(string name, uint? index)
 		{
-			return SaveData.Instance().FindAddress(name, index).First();
-		}
+			return index != null && TryFindFirstAddress(name, index.Value, out uint address) ? address : null;
+        }
 
 		public static bool TryFindFirstAddress(string name, uint index, out uint address)
 		{

@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -131,9 +131,6 @@
   </data>
   <data name="BasicHiddenPointCount" xml:space="preserve">
     <value>HiddenPointCount</value>
-  </data>
-  <data name="BasicHiddenPointTip" xml:space="preserve">
-    <value>You must find at least one hidden point to modify this data.</value>
   </data>
   <data name="BasicItemCount" xml:space="preserve">
     <value>ItemCount</value>
@@ -340,5 +337,20 @@ If the item ID is 0, it means that the ID of the item is not known, and it is im
   </data>
   <data name="TreasureStatesSummation" xml:space="preserve">
     <value>Summation</value>
+  </data>
+  <data name="BacisMoney" xml:space="preserve">
+    <value>Money</value>
+  </data>
+  <data name="BasicAchievementTip" xml:space="preserve">
+    <value>If you want to modify the following data, you may need at least one count to exist.</value>
+  </data>
+  <data name="MeaageSaveAsSameFileFail" xml:space="preserve">
+    <value>Please use the save menu to save the file to the current file (this restriction is to prevent the current file from being overwritten by mistake).</value>
+  </data>
+  <data name="ExceptionCaption" xml:space="preserve">
+    <value>Program Exception</value>
+  </data>
+  <data name="ExceptionHeader" xml:space="preserve">
+    <value>An exception occurred during program execution. Please click the "OK" button to report the exception.</value>
   </data>
 </root>

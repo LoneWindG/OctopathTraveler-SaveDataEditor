@@ -25,7 +25,7 @@ namespace OctopathTraveler
 
         private void LabelModifier2_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            OpenURL("https://github.com/LonelyWindG/OctopathTraveler-SaveDataEditor");
+            OpenURL("https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor");
         }
 
         private void LabelDataSource1_MouseDown(object sender, MouseButtonEventArgs e)
@@ -46,6 +46,16 @@ namespace OctopathTraveler
         private static void OpenURL(string url)
         {
             System.Diagnostics.Process.Start("explorer.exe", url);
+        }
+
+        public static void ReportIssue()
+        {
+            OpenURL("https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/issues");
+        }
+
+        private void ButtonReportProblem_Click(object sender, RoutedEventArgs e)
+        {
+            ReportIssue();
         }
     }
 }

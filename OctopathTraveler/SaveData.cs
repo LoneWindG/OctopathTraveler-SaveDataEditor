@@ -8,9 +8,9 @@ namespace OctopathTraveler
     {
         public static bool IsReadonlyMode = false;
 
-        private static SaveData mThis;
-        private string mFileName = null;
-        private byte[] mBuffer = null;
+        private static SaveData? mThis;
+        private string mFileName = string.Empty;
+        private byte[] mBuffer = Array.Empty<byte>();
         private readonly System.Text.Encoding mEncode = System.Text.Encoding.ASCII;
         public uint Adventure { private get; set; } = 0;
         public string FileName => mFileName;
@@ -41,26 +41,29 @@ namespace OctopathTraveler
 
         public bool SaveAs(string filenname)
         {
-            if (IsReadonlyMode || mBuffer == null) return false;
-            mFileName = filenname;
-            return Save();
+            if (mBuffer == null) return false;
+            if (string.Equals(mFileName, filenname)) return false;
+            File.WriteAllBytes(filenname, mBuffer);
+            return true;
         }
 
-        public (bool, Exception) SaveAsJson(string filePath)
+        public (bool, Exception?) SaveAsJson(string filePath)
         {
             if (mBuffer == null) return (false, null);
             return GvasFormat.GvasConverter.Convert2JsonFile(filePath, new MemoryStream(mBuffer, false));
         }
 
-        public uint ReadNumber(uint address, uint size)
+        public uint ReadNumber(uint? address, uint size)
         {
+            if (address == null) return 0;
+
             if (mBuffer == null) return 0;
-            address = CalcAddress(address);
+            address = CalcAddress(address.Value);
             if (address + size > mBuffer.Length) return 0;
             uint result = 0;
             for (int i = 0; i < size; i++)
             {
-                result += (uint)(mBuffer[address + i]) << (i * 8);
+                result += (uint)(mBuffer[address.Value + i]) << (i * 8);
             }
             return result;
         }
@@ -93,14 +96,16 @@ namespace OctopathTraveler
             return mEncode.GetString(tmp).Trim('\0');
         }
 
-        public void WriteNumber(uint address, uint size, uint value)
+        public void WriteNumber(uint? address, uint size, uint value)
         {
+            if (address == null) return;
+
             if (mBuffer == null) return;
-            address = CalcAddress(address);
+            address = CalcAddress(address.Value);
             if (address + size > mBuffer.Length) return;
             for (uint i = 0; i < size; i++)
             {
-                mBuffer[address + i] = (byte)(value & 0xFF);
+                mBuffer[address.Value + i] = (byte)(value & 0xFF);
                 value >>= 8;
             }
         }
@@ -170,21 +175,23 @@ namespace OctopathTraveler
             }
         }
 
-        public List<uint> FindAddress(string name, uint index)
+        public List<uint> FindAddress(string name, uint? index)
         {
             List<uint> result = new List<uint>();
+            if (index == null) return result;
+
             for (; index < mBuffer.Length; index++)
             {
-                if (mBuffer[index] != name[0]) continue;
+                if (mBuffer[index.Value] != name[0]) continue;
 
                 int len = 1;
                 for (; len < name.Length; len++)
                 {
-                    if (mBuffer[index + len] != name[len]) break;
+                    if (mBuffer[index.Value + len] != name[len]) break;
                 }
                 if (len >= name.Length)
                 {
-                    result.Add(index);
+                    result.Add(index.Value);
                 }
 
                 index += (uint)len;

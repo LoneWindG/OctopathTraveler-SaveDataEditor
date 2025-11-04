@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
     Microsoft ResX Schema 
@@ -117,11 +117,63 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="BasicMoney" xml:space="preserve">
-    <value>金钱</value>
+  <data name="BasicAchievementProgress" xml:space="preserve">
+    <value>成就进度: (下列数据)</value>
+  </data>
+  <data name="BasicBattleCount" xml:space="preserve">
+    <value>战斗次数</value>
+  </data>
+  <data name="BasicEscapeCount" xml:space="preserve">
+    <value>逃跑次数</value>
   </data>
   <data name="BasicHero" xml:space="preserve">
     <value>主角</value>
+  </data>
+  <data name="BasicHiddenPointCount" xml:space="preserve">
+    <value>隐藏道具数量</value>
+  </data>
+  <data name="BasicItemCount" xml:space="preserve">
+    <value>道具数量</value>
+  </data>
+  <data name="BasicMoney" xml:space="preserve">
+    <value>金钱</value>
+  </data>
+  <data name="BasicPlayTime" xml:space="preserve">
+    <value>游戏时间</value>
+  </data>
+  <data name="BasicSaveDate" xml:space="preserve">
+    <value>保存日期</value>
+  </data>
+  <data name="BasicTreasureCount" xml:space="preserve">
+    <value>宝箱数量</value>
+  </data>
+  <data name="ButtonExport" xml:space="preserve">
+    <value>导出</value>
+  </data>
+  <data name="ButtonSwitchFilter" xml:space="preserve">
+    <value>切换筛选</value>
+  </data>
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <data name="InfoExcel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\resource\info_zh_cn.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="ItemAccessory" xml:space="preserve">
+    <value>饰品</value>
+  </data>
+  <data name="ItemAccessory1" xml:space="preserve">
+    <value>饰品1</value>
+  </data>
+  <data name="ItemAccessory2" xml:space="preserve">
+    <value>饰品2</value>
+  </data>
+  <data name="ItemAxe" xml:space="preserve">
+    <value>斧</value>
+  </data>
+  <data name="ItemBody" xml:space="preserve">
+    <value>身体</value>
+  </data>
+  <data name="ItemBow" xml:space="preserve">
+    <value>弓</value>
   </data>
   <data name="ItemChoiceCancel" xml:space="preserve">
     <value>取消</value>
@@ -135,6 +187,57 @@
   <data name="ItemChoiceTitle" xml:space="preserve">
     <value>项目选择</value>
   </data>
+  <data name="ItemDagger" xml:space="preserve">
+    <value>短剑</value>
+  </data>
+  <data name="ItemDark" xml:space="preserve">
+    <value>暗</value>
+  </data>
+  <data name="ItemFire" xml:space="preserve">
+    <value>火</value>
+  </data>
+  <data name="ItemHead" xml:space="preserve">
+    <value>头</value>
+  </data>
+  <data name="ItemIce" xml:space="preserve">
+    <value>冰</value>
+  </data>
+  <data name="ItemKnowledge" xml:space="preserve">
+    <value>情报</value>
+  </data>
+  <data name="ItemKnowledgeTip" xml:space="preserve">
+    <value>情报(收藏家成就好像不需要这个)</value>
+  </data>
+  <data name="ItemLance" xml:space="preserve">
+    <value>枪</value>
+  </data>
+  <data name="ItemLight" xml:space="preserve">
+    <value>光</value>
+  </data>
+  <data name="ItemMaterial" xml:space="preserve">
+    <value>调和素材</value>
+  </data>
+  <data name="ItemRod" xml:space="preserve">
+    <value>杖</value>
+  </data>
+  <data name="ItemShield" xml:space="preserve">
+    <value>盾</value>
+  </data>
+  <data name="ItemSword" xml:space="preserve">
+    <value>剑</value>
+  </data>
+  <data name="ItemThunder" xml:space="preserve">
+    <value>雷</value>
+  </data>
+  <data name="ItemValuable" xml:space="preserve">
+    <value>贵重物品</value>
+  </data>
+  <data name="ItemValuableTip" xml:space="preserve">
+    <value>贵重物品(仅一部分, 不是全部)</value>
+  </data>
+  <data name="ItemWind" xml:space="preserve">
+    <value>风</value>
+  </data>
   <data name="MainWindowTitle" xml:space="preserve">
     <value>八方旅人存档编辑器</value>
   </data>
@@ -147,6 +250,9 @@
   <data name="MenuExit" xml:space="preserve">
     <value>退出(_E)</value>
   </data>
+  <data name="MenuExportInfoExcel" xml:space="preserve">
+    <value>导出嵌入的数据Excel(_E)...</value>
+  </data>
   <data name="MenuFile" xml:space="preserve">
     <value>文件(_F)</value>
   </data>
@@ -158,6 +264,9 @@
   </data>
   <data name="MenuFileSaveAs" xml:space="preserve">
     <value>另存为(_A)...</value>
+  </data>
+  <data name="MenuFileSaveAsJson" xml:space="preserve">
+    <value>另存为Json(_J)...</value>
   </data>
   <data name="MessageLoadSuccess" xml:space="preserve">
     <value>加载成功</value>
@@ -174,6 +283,13 @@
   <data name="TabItemCharacter" xml:space="preserve">
     <value>角色</value>
   </data>
+  <data name="TabItemItemInventory" xml:space="preserve">
+    <value>道具收集列表</value>
+  </data>
+  <data name="TabItemItemInventoryTip" xml:space="preserve">
+    <value>复选框仅用于展示, 并不会修改存档;
+道具ID为0表示不知道这个道具的ID, 无法从存档中得知是否已拥有</value>
+  </data>
   <data name="TabItemItems" xml:space="preserve">
     <value>道具</value>
   </data>
@@ -183,77 +299,35 @@
   <data name="TabItemPlaces" xml:space="preserve">
     <value>地点</value>
   </data>
+  <data name="TabItemPlacesWarning" xml:space="preserve">
+    <value>该页面中的地点可能遗漏部分名称, 而且有些地点ID找不到对应名称, 可能是游戏开发时的弃用地点未移除</value>
+  </data>
   <data name="TabItemQuests" xml:space="preserve">
     <value>任务</value>
   </data>
   <data name="TabItemTameMonster" xml:space="preserve">
     <value>捕获的魔物</value>
   </data>
-  <data name="TabItemWeak" xml:space="preserve">
-    <value>怪物弱点</value>
-  </data>
-  <data name="ToolTipOpen" xml:space="preserve">
-    <value>打开</value>
-  </data>
-  <data name="ItemSword" xml:space="preserve">
-    <value>剑</value>
-  </data>
-  <data name="ItemLance" xml:space="preserve">
-    <value>枪</value>
-  </data>
-  <data name="ItemDagger" xml:space="preserve">
-    <value>短剑</value>
-  </data>
-  <data name="ItemAxe" xml:space="preserve">
-    <value>斧</value>
-  </data>
-  <data name="ItemBow" xml:space="preserve">
-    <value>弓</value>
-  </data>
-  <data name="ItemRod" xml:space="preserve">
-    <value>杖</value>
-  </data>
-  <data name="ItemFire" xml:space="preserve">
-    <value>火</value>
-  </data>
-  <data name="ItemIce" xml:space="preserve">
-    <value>冰</value>
-  </data>
-  <data name="ItemThunder" xml:space="preserve">
-    <value>雷</value>
-  </data>
-  <data name="ItemWind" xml:space="preserve">
-    <value>风</value>
-  </data>
-  <data name="ItemLight" xml:space="preserve">
-    <value>光</value>
-  </data>
-  <data name="ItemDark" xml:space="preserve">
-    <value>暗</value>
-  </data>
-  <data name="ItemAccessory1" xml:space="preserve">
-    <value>饰品1</value>
-  </data>
-  <data name="ItemAccessory2" xml:space="preserve">
-    <value>饰品2</value>
-  </data>
-  <data name="ItemBody" xml:space="preserve">
-    <value>身体</value>
-  </data>
-  <data name="ItemHead" xml:space="preserve">
-    <value>头</value>
-  </data>
-  <data name="ItemShield" xml:space="preserve">
-    <value>盾</value>
+  <data name="TabItemTameMonsterWarning" xml:space="preserve">
+    <value>该页面下拉选项中可选的魔物可能不是有效的可捕获魔物, 请慎重修改已捕获的魔物, 避免损坏您的存档。</value>
   </data>
   <data name="TabItemTreasure" xml:space="preserve">
     <value>宝箱&amp;隐藏道具地点</value>
   </data>
+  <data name="TabItemWeak" xml:space="preserve">
+    <value>怪物弱点</value>
+  </data>
+  <data name="ToolTipConvert" xml:space="preserve">
+    <value>将存档转换为Json</value>
+  </data>
+  <data name="ToolTipOpen" xml:space="preserve">
+    <value>打开</value>
+  </data>
   <data name="ToolTipSave" xml:space="preserve">
     <value>保存</value>
   </data>
-  <data name="TabItemTameMonsterWarning" xml:space="preserve">
-    <value>该页面下拉选项中可选的魔物可能不是有效的可捕获魔物, 请慎重修改已捕获的魔物, 避免损坏您的存档。</value>
+  <data name="ToolTipSaveAsJson" xml:space="preserve">
+    <value>另存为Json</value>
   </data>
   <data name="TreasureStatesChest" xml:space="preserve">
     <value>宝箱</value>
@@ -264,81 +338,19 @@
   <data name="TreasureStatesSummation" xml:space="preserve">
     <value>总和</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="InfoExcel" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\resource\info_zh_cn.xlsx;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  <data name="BacisMoney" xml:space="preserve">
+    <value>金钱</value>
   </data>
-  <data name="MenuExportInfoExcel" xml:space="preserve">
-    <value>导出嵌入的数据Excel(_E)...</value>
+  <data name="BasicAchievementTip" xml:space="preserve">
+    <value>如果想要修改下列数据, 则可能需要至少存在有至少一个计数</value>
   </data>
-  <data name="TabItemPlacesWarning" xml:space="preserve">
-    <value>该页面中的地点可能遗漏部分名称, 而且有些地点ID找不到对应名称, 可能是游戏开发时的弃用地点未移除</value>
+  <data name="MeaageSaveAsSameFileFail" xml:space="preserve">
+    <value>请使用保存菜单将文件保存到当前文件（此限制是为了防止当前文件被意外覆盖）。</value>
   </data>
-  <data name="MenuFileSaveAsJson" xml:space="preserve">
-    <value>另存为Json(_J)...</value>
+  <data name="ExceptionCaption" xml:space="preserve">
+    <value>程序异常</value>
   </data>
-  <data name="ToolTipConvert" xml:space="preserve">
-    <value>将存档转换为Json</value>
-  </data>
-  <data name="ToolTipSaveAsJson" xml:space="preserve">
-    <value>另存为Json</value>
-  </data>
-  <data name="BasicPlayTime" xml:space="preserve">
-    <value>游戏时间</value>
-  </data>
-  <data name="BasicSaveDate" xml:space="preserve">
-    <value>保存日期</value>
-  </data>
-  <data name="BasicAchievementProgress" xml:space="preserve">
-    <value>成就进度: (下列数据)</value>
-  </data>
-  <data name="BasicBattleCount" xml:space="preserve">
-    <value>战斗次数</value>
-  </data>
-  <data name="BasicEscapeCount" xml:space="preserve">
-    <value>逃跑次数</value>
-  </data>
-  <data name="BasicHiddenPointCount" xml:space="preserve">
-    <value>隐藏道具数量</value>
-  </data>
-  <data name="BasicTreasureCount" xml:space="preserve">
-    <value>宝箱数量</value>
-  </data>
-  <data name="ItemAccessory" xml:space="preserve">
-    <value>饰品</value>
-  </data>
-  <data name="ItemKnowledgeTip" xml:space="preserve">
-    <value>情报(收藏家成就好像不需要这个)</value>
-  </data>
-  <data name="ItemMaterial" xml:space="preserve">
-    <value>调和素材</value>
-  </data>
-  <data name="ItemValuableTip" xml:space="preserve">
-    <value>贵重物品(仅一部分, 不是全部)</value>
-  </data>
-  <data name="BasicItemCount" xml:space="preserve">
-    <value>道具数量</value>
-  </data>
-  <data name="ButtonExport" xml:space="preserve">
-    <value>导出</value>
-  </data>
-  <data name="ButtonSwitchFilter" xml:space="preserve">
-    <value>切换筛选</value>
-  </data>
-  <data name="TabItemItemInventory" xml:space="preserve">
-    <value>道具收集列表</value>
-  </data>
-  <data name="TabItemItemInventoryTip" xml:space="preserve">
-    <value>复选框仅用于展示, 并不会修改存档;
-道具ID为0表示不知道这个道具的ID, 无法从存档中得知是否已拥有</value>
-  </data>
-  <data name="ItemKnowledge" xml:space="preserve">
-    <value>情报</value>
-  </data>
-  <data name="ItemValuable" xml:space="preserve">
-    <value>贵重物品</value>
-  </data>
-  <data name="BasicHiddenPointTip" xml:space="preserve">
-    <value>你必须发现至少一个隐藏道具才能修改此数据</value>
+  <data name="ExceptionHeader" xml:space="preserve">
+    <value>程序运行时发生异常, 请点击"确定"按钮报告该异常</value>
   </data>
 </root>

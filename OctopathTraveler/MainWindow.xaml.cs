@@ -17,7 +17,6 @@ namespace OctopathTraveler
         public MainWindow()
         {
             InitializeComponent();
-            TopBar_ButtonSave.Visibility = SaveData.IsReadonlyMode ? Visibility.Collapsed : Visibility.Visible;
             SetBasicDataTip();
         }
 
@@ -53,14 +52,14 @@ namespace OctopathTraveler
 
         private void MenuItemFileSaveAs_Click(object sender, RoutedEventArgs e)
         {
-            if (SaveData.IsReadonlyMode)
-            {
-                MessageBox.Show(MeaageSaveFail, "ReadonlyMode");
-                return;
-            }
-
             var dlg = new SaveFileDialog();
             if (dlg.ShowDialog() == false) return;
+
+            if (string.Equals(dlg.FileName, SaveData.Instance().FileName))
+            {
+                MessageBox.Show(MeaageSaveAsSameFileFail, MenuFileSaveAs);
+                return;
+            }
 
             if (SaveData.Instance().SaveAs(dlg.FileName) == true) MessageBox.Show(MessageSaveSuccess);
             else MessageBox.Show(MeaageSaveFail, SaveData.IsReadonlyMode ? "ReadonlyMode" : "");
@@ -466,7 +465,7 @@ namespace OctopathTraveler
                 return;
 
             string name;
-            Func<InventoryItemInfo, bool> filter = null;
+            Func<InventoryItemInfo, bool>? filter = null;
             bool isAppendState = false;
             if (_itemInventoryFilter == 0)
             {
@@ -580,9 +579,6 @@ namespace OctopathTraveler
             tipBuilder.Remove(tipBuilder.Length - 1, 1);
             LabelBasicItemCount.ToolTip = tipBuilder.ToString();
             ToolTipService.SetInitialShowDelay(LabelBasicItemCount, 150);
-
-            LabelBasicHiddenPointCount.ToolTip = BasicHiddenPointTip;
-            ToolTipService.SetInitialShowDelay(LabelBasicHiddenPointCount, 150);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using MiniExcelLibs;
+using MiniExcelLibs;
 using OctopathTraveler.Properties;
 using System.Collections.Generic;
 using System.Globalization;
@@ -56,7 +56,7 @@ namespace OctopathTraveler
         private void Init()
         {
             var culture = Resources.Culture ?? CultureInfo.CurrentUICulture;
-            byte[] excel = LoadExcel(false, culture);
+            byte[]? excel = LoadExcel(false, culture);
             excel ??= LoadExcel(false, null);
             excel ??= LoadExcel(true, culture);
             excel ??= LoadExcel(true, null);
@@ -80,16 +80,16 @@ namespace OctopathTraveler
             reader.AppendListAndOrderByValue("treasure_states", TreasureStates);
         }
 
-        private static byte[] LoadExcel(bool embedded, CultureInfo culture)
+        private static byte[]? LoadExcel(bool embedded, CultureInfo? culture)
         {
             bool isSpecificCulture = culture != null && !culture.Name.StartsWith("en", System.StringComparison.OrdinalIgnoreCase);
             if (embedded)
             {
-                var resourceSet = Resources.ResourceManager.GetResourceSet(isSpecificCulture ? culture : CultureInfo.InvariantCulture, true, false);
+                var resourceSet = Resources.ResourceManager.GetResourceSet(isSpecificCulture && culture != null ? culture : CultureInfo.InvariantCulture, true, false);
                 LoadedInfoFile = "Info Excel Path: Embedded Resource, Language: en";
                 return resourceSet == null ? null : resourceSet.GetObject("InfoExcel") as byte[];
             }
-            else if (isSpecificCulture)
+            else if (isSpecificCulture && culture != null)
             {
                 string file = $"info_{culture.Name.ToLower().Replace("-", "_")}.xlsx";
                 if (File.Exists(file))

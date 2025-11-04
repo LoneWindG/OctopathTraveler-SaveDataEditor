@@ -1,8 +1,9 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Windows;
+using static OctopathTraveler.Properties.Resources;
 
 namespace OctopathTraveler
 {
@@ -13,9 +14,7 @@ namespace OctopathTraveler
     {
         private void App_Startup(object sender, StartupEventArgs e)
         {
-#if !DEBUG
-            Application.Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
-#endif
+            Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
 
             for (int i = 0; i < e.Args.Length; i++)
             {
@@ -81,21 +80,31 @@ namespace OctopathTraveler
             }
             finally
             {
+#if !DEBUG
                 e.Handled = true;
+#endif
             }
         }
 
         private static void HandleException(Exception exception)
         {
-            string ex = exception.ToString();
+            string content = $"Time: {DateTime.Now}\n" +
+                $"UI Language: {CultureInfo.CurrentUICulture.NativeName}({CultureInfo.CurrentUICulture.Name})\n" +
+                $"Resources Language: {Culture.NativeName}({Culture.Name})\n" +
+                $"{exception}";
             try
             {
-                File.AppendAllText("exception.log", DateTime.Now.ToString() + "\n" + ex + "\n");
+                File.AppendAllText("exception.log", content);
+                Clipboard.SetText(content);
             }
             catch (Exception)
             {
             }
-            MessageBox.Show(ex, "Program Exception");
+            var result = MessageBox.Show(ExceptionHeader + "\n" + content, ExceptionCaption, MessageBoxButton.OKCancel, MessageBoxImage.Error);
+            if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
+            {
+                AboutWindow.ReportIssue();
+            }
         }
     }
 }

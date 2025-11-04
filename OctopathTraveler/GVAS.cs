@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,31 +9,38 @@ namespace OctopathTraveler
     class GVAS
     {
 		private Dictionary<String, GVASData> mValues = new Dictionary<string, GVASData>();
-		private IGVASRenameKey mRename;
+		private IGVASRenameKey? mRename;
 
-		public GVAS(IGVASRenameKey rename)
+		public GVAS(IGVASRenameKey? rename)
 		{
 			mRename = rename;
 		}
 
 		public GVASData Key(String key)
 		{
-			return mValues[key];
-		}
+			return mValues.TryGetValue(key, out GVASData? value) ? value : throw new KeyNotFoundException($"Key '{key}' not found.");
+        }
 
-		public bool HasKey(String key)
+		public GVASData? KeyOrNull(String key)
+		{
+			return mValues.TryGetValue(key, out GVASData? value) ? value : null;
+        }
+
+        public bool HasKey(String key)
 		{
 			return mValues.ContainsKey(key);
 		}
 
-		public uint AppendValue(uint address, bool isSubkeyByUnderline = true)
+		public uint AppendValue(uint? address, bool isSubkeyByUnderline = true)
 		{
+			if (address == null) return 0;
+
 			// length
 			address -= 4;
 			uint length = SaveData.Instance().ReadNumber(address, 4);
 			// key
 			address += 4;
-			String key = SaveData.Instance().ReadText(address, length);
+			String key = SaveData.Instance().ReadText(address.Value, length);
 			if (isSubkeyByUnderline && key.IndexOf("_") > 0)
 			{
 				key = key.Substring(0, key.IndexOf("_"));
@@ -45,17 +52,17 @@ namespace OctopathTraveler
 			address += length;
 			length = SaveData.Instance().ReadNumber(address, 4);
 			address += 4;
-			String type = SaveData.Instance().ReadText(address, length);
+			String type = SaveData.Instance().ReadText(address.Value, length);
 			address += length;
 			switch (type)
 			{
 				case "IntProperty":
-					mValues.Add(key, new GVASData() { Address = address + 9, Size = 4 });
+					mValues.Add(key, new GVASData() { Address = address.Value + 9, Size = 4 });
 					address += 17;
 					break;
 
 				case "BoolProperty":
-					mValues.Add(key, new GVASData() { Address = address + 10, Size = 1 });
+					mValues.Add(key, new GVASData() { Address = address.Value + 10, Size = 1 });
 					address += 17;
 					break;
 
@@ -63,7 +70,7 @@ namespace OctopathTraveler
 					address += 8;
 					length = SaveData.Instance().ReadNumber(address, 4);
 					address += 4;
-					type = SaveData.Instance().ReadText(address, length);
+					type = SaveData.Instance().ReadText(address.Value, length);
 					address += length + 1;
 					uint count = SaveData.Instance().ReadNumber(address, 4);
 					address += 4;
@@ -78,7 +85,7 @@ namespace OctopathTraveler
 					}
 					for (uint i = 0; i < count; i++)
 					{
-						mValues.Add(key + "_" + i.ToString(), new GVASData() { Address = address, Size = size });
+						mValues.Add(key + "_" + i.ToString(), new GVASData() { Address = address.Value, Size = size });
 						address += size;
 					}
 					address += size;
@@ -89,7 +96,7 @@ namespace OctopathTraveler
 					address += AppendValue(address);
 					break;
 			}
-			return address;
+			return address.Value;
 		}
 	}
 }
