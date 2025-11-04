@@ -6,7 +6,11 @@
 
 ## Language
 
-[English](README_EN.md) [中文](README.md)
+* READEME: [English](README_EN.md) [中文](README.md)
+* 対応言語：英語、簡体字中国語、日本語（一部対応）
+* デフォルトの表示はシステム言語に基づきます。サポートされていない言語は英語で表示されます。
+* 表示言語の強制：ショートカットを作成し、対象フィールドのファイルパスに「-language=言語エンコード」（ハイフンの前にスペースが必要です）を追加します。
+* 対応言語エンコード（大文字と小文字は区別されません）：en（enで始まるすべてのエンコード、英語で表示）、zh-CN/zh_CN（簡体字中国語で表示）、ja-JP/ja_jp（日本語で表示）。
 
 ## 概要
 
@@ -25,7 +29,7 @@ http://www.jp.square-enix.com/octopathtraveler
 
 ## Build環境
 
-* Windows 10(64bit)
+* Windows 10 (64bit)
 * Visual Studio 2022
 
 ## Nintendo Switch用編集の手順
