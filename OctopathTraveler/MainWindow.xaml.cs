@@ -129,7 +129,7 @@ namespace OctopathTraveler
             var dlg = new SaveFileDialog
             {
                 InitialDirectory = Directory.GetCurrentDirectory(),
-                FileName = "SampleSaveFile",
+                FileName = "ExampleSaveData",
             };
             if (!dlg.ShowDialog().GetValueOrDefault())
                 return;

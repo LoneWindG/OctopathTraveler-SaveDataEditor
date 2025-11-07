@@ -591,10 +591,10 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <Label Grid.Row="1">
+                        <Label Grid.Row="0">
                             <TextBlock TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemTameMonsterWarning}" />
                         </Label>
-                        <ListBox Grid.Row="0" ItemsSource="{Binding TameMonsters}">
+                        <ListBox Grid.Row="1" ItemsSource="{Binding TameMonsters}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <StackPanel Orientation="Horizontal">
