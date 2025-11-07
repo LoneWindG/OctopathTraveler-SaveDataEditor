@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="BasicAchievementProgress" xml:space="preserve">
-    <value>Achievement Progress: (Following data)</value>
+    <value>🏆Achievement Progress:</value>
   </data>
   <data name="BasicBattleCount" xml:space="preserve">
     <value>BattleCount</value>
@@ -130,10 +130,10 @@
     <value>Hero</value>
   </data>
   <data name="BasicHiddenPointCount" xml:space="preserve">
-    <value>HiddenPointCount</value>
+    <value>Eagle-Eyed</value>
   </data>
-  <data name="BasicItemCount" xml:space="preserve">
-    <value>ItemCount</value>
+  <data name="BasicItemFlag" xml:space="preserve">
+    <value>Collector</value>
   </data>
   <data name="BasicMoney" xml:space="preserve">
     <value>Money</value>
@@ -145,13 +145,10 @@
     <value>SaveDate</value>
   </data>
   <data name="BasicTreasureCount" xml:space="preserve">
-    <value>TreasureCount</value>
+    <value>Treasure Hunter</value>
   </data>
   <data name="ButtonExport" xml:space="preserve">
     <value>Export</value>
-  </data>
-  <data name="ButtonSwitchFilter" xml:space="preserve">
-    <value>SwitchFilter</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="InfoExcel" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -205,9 +202,6 @@
   <data name="ItemKnowledge" xml:space="preserve">
     <value>Knowledge</value>
   </data>
-  <data name="ItemKnowledgeTip" xml:space="preserve">
-    <value>Knowledge (Achievements don't require collecting these (maybe))</value>
-  </data>
   <data name="ItemLance" xml:space="preserve">
     <value>Lance</value>
   </data>
@@ -232,9 +226,6 @@
   <data name="ItemValuable" xml:space="preserve">
     <value>Valuable</value>
   </data>
-  <data name="ItemValuableTip" xml:space="preserve">
-    <value>Valuable (Part of it, not all of it)</value>
-  </data>
   <data name="ItemWind" xml:space="preserve">
     <value>Wind</value>
   </data>
@@ -251,7 +242,7 @@
     <value>(_E)xit</value>
   </data>
   <data name="MenuExportInfoExcel" xml:space="preserve">
-    <value>(_E)xport Embedded Info Excel...</value>
+    <value>Export Embedded Info Excel...</value>
   </data>
   <data name="MenuFile" xml:space="preserve">
     <value>(_F)ile</value>
@@ -284,11 +275,7 @@
     <value>Character</value>
   </data>
   <data name="TabItemItemInventory" xml:space="preserve">
-    <value>Inventory (Owned or unowned)</value>
-  </data>
-  <data name="TabItemItemInventoryTip" xml:space="preserve">
-    <value>The check box is only for display, and will not modify the "save data";
-If the item ID is 0, it means that the ID of the item is not known, and it is impossible to know whether it is already owned from the "save data".</value>
+    <value>🏆Item Collector</value>
   </data>
   <data name="TabItemItems" xml:space="preserve">
     <value>Items</value>
@@ -297,7 +284,7 @@ If the item ID is 0, it means that the ID of the item is not known, and it is im
     <value>Party</value>
   </data>
   <data name="TabItemPlaces" xml:space="preserve">
-    <value>Places</value>
+    <value>🏆Places</value>
   </data>
   <data name="TabItemPlacesWarning" xml:space="preserve">
     <value>Some of the places on this page may be missing names, and some place IDs cannot be found, possibly because they were abandoned during game development and not removed.</value>
@@ -312,10 +299,10 @@ If the item ID is 0, it means that the ID of the item is not known, and it is im
     <value>The monsters selected in the drop down options on this page may not be valid tameable monsters, so please be careful when modifying tamed monsters to avoid damaging your archive.</value>
   </data>
   <data name="TabItemTreasure" xml:space="preserve">
-    <value>TreasureStates</value>
+    <value>🏆Treasure &amp; HiddenItem</value>
   </data>
   <data name="TabItemWeak" xml:space="preserve">
-    <value>Weakness</value>
+    <value>🏆Weakness</value>
   </data>
   <data name="ToolTipConvert" xml:space="preserve">
     <value>Convert SaveData to Json</value>
@@ -330,7 +317,7 @@ If the item ID is 0, it means that the ID of the item is not known, and it is im
     <value>Save As Json</value>
   </data>
   <data name="TreasureStatesChest" xml:space="preserve">
-    <value>Chest</value>
+    <value>Treasure</value>
   </data>
   <data name="TreasureStatesHiddenItem" xml:space="preserve">
     <value>HiddenItem</value>
@@ -338,11 +325,9 @@ If the item ID is 0, it means that the ID of the item is not known, and it is im
   <data name="TreasureStatesSummation" xml:space="preserve">
     <value>Summation</value>
   </data>
-  <data name="BacisMoney" xml:space="preserve">
-    <value>Money</value>
-  </data>
   <data name="BasicAchievementTip" xml:space="preserve">
-    <value>If you want to modify the following data, you may need at least one count to exist.</value>
+    <value>If you want to modify the following data, you may need at least one count to exist.
+(Nintendo Switch games do not have an achievement system, so save data may not contain achievement statistics.)</value>
   </data>
   <data name="MeaageSaveAsSameFileFail" xml:space="preserve">
     <value>Please use the save menu to save the file to the current file (this restriction is to prevent the current file from being overwritten by mistake).</value>
@@ -352,5 +337,27 @@ If the item ID is 0, it means that the ID of the item is not known, and it is im
   </data>
   <data name="ExceptionHeader" xml:space="preserve">
     <value>An exception occurred during program execution. Please click the "OK" button to report the exception.</value>
+  </data>
+  <data name="MenuLanguage" xml:space="preserve">
+    <value>(_L)anguage</value>
+  </data>
+  <data name="TabItemItemInventoryTip" xml:space="preserve">
+    <value>Collector Achievement Tip
+Knowledge: Don't require collecting these.
+Valuable: For 325/326/327, you should only need to retrieve any one of them; for 311/312, you may only need to retrieve one of them.</value>
+  </data>
+  <data name="MenuExportExampleSaveFile" xml:space="preserve">
+    <value>Export Example Save File</value>
+  </data>
+  <data name="MenuExportExampleSaveFileTip" xml:space="preserve">
+    <value>Example save file description:
+This example save file is my personal save file with all achievements. You can use it as a reference if you want to complete all achievements.</value>
+  </data>
+  <data name="ExampleSaveFile" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resource\ExampleSaveFile;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="TabItemItemsTip" xml:space="preserve">
+    <value>The entry with ID 0 at the top of the list indicates that item data is not saved at this location.
+To add an item you do not own, click the button to select and add a new item to this location.</value>
   </data>
 </root>

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace OctopathTraveler
@@ -19,7 +19,7 @@ namespace OctopathTraveler
             if (!base.Parse((IDictionary<string, object>)row))
                 return false;
 
-            string num = (string)(row.C?.ToString());
+            string num = row.C?.ToString() ?? string.Empty;
             if (num == "0" || string.IsNullOrWhiteSpace(num))
             {
                 Summation = 0;
@@ -30,10 +30,10 @@ namespace OctopathTraveler
 
             Summation = Convert.ToUInt32(num);
 
-            num = (string)(row.D?.ToString());
+            num = row.D?.ToString() ?? string.Empty;
             Chest = string.IsNullOrWhiteSpace(num) ? 0 : Convert.ToUInt32(num);
 
-            num = (string)(row.E?.ToString());
+            num = row.E?.ToString() ?? string.Empty;
             HiddenItem = string.IsNullOrWhiteSpace(num) ? 0 : Convert.ToUInt32(num);
             if (Summation != Chest + HiddenItem)
             {
@@ -41,7 +41,6 @@ namespace OctopathTraveler
                     $"Sumation: {Summation}, Chest: {Chest}, HidenItem: {HiddenItem}, plase check excel file";
                 throw new ArgumentException(msg);
             }
-
             return true;
         }
     }

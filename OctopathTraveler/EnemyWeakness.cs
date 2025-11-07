@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.ComponentModel;
 
 namespace OctopathTraveler
@@ -17,7 +17,7 @@ namespace OctopathTraveler
             nameof(Fire), nameof(Ice), nameof(Thunder), nameof(Wind), nameof(Light), nameof(Dark)
         };
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
         private readonly uint mWeaponAddress;
         private readonly uint mMagicAddress;

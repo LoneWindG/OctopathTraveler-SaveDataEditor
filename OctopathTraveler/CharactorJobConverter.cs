@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -21,7 +21,7 @@ namespace OctopathTraveler
 
 		public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
 		{
-			return Info.Instance().Jobs[(int)value];
+			return Info.Instance().Jobs[(int)value].Value;
 		}
 	}
 }

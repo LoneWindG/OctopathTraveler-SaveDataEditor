@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.Linq;
 
 namespace OctopathTraveler
@@ -19,13 +18,12 @@ namespace OctopathTraveler
         public ObservableCollection<EnemyWeakness> EnemyWeaknesses { get; set; } = new ObservableCollection<EnemyWeakness>();
         public ObservableCollection<TreasureState> TreasureStates { get; set; } = new ObservableCollection<TreasureState>();
 
-        public Info Info { get; private set; } = Info.Instance();
+        public static Info Info => Info.Instance();
 
         public DataContext()
         {
             var save = SaveData.Instance();
 
-            BasicData = new BasicData();
             foreach (var address in save.FindAddress("CharacterID_", 0))
             {
                 var chara = new Charactor(address);
@@ -34,25 +32,18 @@ namespace OctopathTraveler
             }
 
             int zeroIdCount = 0;
-            var ownedItemIds = new HashSet<uint>();
             var items = new List<Item>(Info.Instance().Items.Count);
             foreach (var address in save.FindAddress("ItemID_", 0))
             {
                 var item = new Item(address);
-                if (item.ID == 0 && zeroIdCount++ > 8)
+                if (item.ID == 0 && zeroIdCount++ >= 8)
                     continue;
 
                 items.Add(item);
-                if (item.Count > 0)
-                    ownedItemIds.Add(item.ID);
             }
             items.Sort((x, y) => x.ID.CompareTo(y.ID));
             Items = new ObservableCollection<Item>(items);
-
-            foreach (var item in Info.ItemInventory)
-            {
-                item.IsOwned = ownedItemIds.Contains(item.Value);
-            }
+            BasicData = new BasicData(items.AsReadOnly());
 
             var gvas = new GVAS(null);
             gvas.AppendValue(save.FindAddress("MainMemberID_", 0).First());
@@ -149,7 +140,7 @@ namespace OctopathTraveler
 
             uint weaks = save.FindAddress("EnemyInfoData", 0).First();
             Console.WriteLine(save.FindAddress("IsAnalyse_", 0).Count);
-            List<uint> isAnalyseList = save.FindAddress("IsAnalyse_", 0);
+            var isAnalyseList = save.FindAddress("IsAnalyse_", 0);
 
             var lastEnemy = Info.Instance().Enemies.LastOrDefault();
             int maxNum = lastEnemy == null ? -1 : (int)lastEnemy.Value;

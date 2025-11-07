@@ -7,72 +7,124 @@ using static OctopathTraveler.Properties.Resources;
 
 namespace OctopathTraveler
 {
-    /// <summary>
-    /// App.xaml の相互作用ロジック
-    /// </summary>
     public partial class App : Application
     {
+        public static CultureInfo DefaultLanguage => CultureInfo.GetCultureInfo("en");
+        public static CultureInfo[] SupportedLanguage => new[]
+        {
+            DefaultLanguage,
+            CultureInfo.GetCultureInfo("ja-JP"),
+            CultureInfo.GetCultureInfo("zh-CN")
+        };
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
+#if !DEBUG
             Current.DispatcherUnhandledException += OnDispatcherUnhandledException;
+#endif
 
-            string? language = null;
-            for (int i = 0; i < e.Args.Length; i++)
+            var language = Environment.GetEnvironmentVariable("LANGUAGE");
+            if (!string.IsNullOrEmpty(language))
             {
-                string arg = e.Args[i];
-                Trace.WriteLine($"Startup arg[{i}]: {arg}");
-                if (arg.StartsWith("-language="))
-                {
-                    language = arg["-language=".Length..];
-                    continue;
-                }
-
-                if (arg == "-readonlyMode")
-                {
-                    SaveData.IsReadonlyMode = true;
-                }
+                SetStartupLanguage(language);
             }
-            SetLanguage(language ?? CultureInfo.CurrentUICulture.Name);
+            SetLanguage(Culture ?? CultureInfo.CurrentUICulture);
         }
 
-        private static void SetLanguage(string language)
+        private static void SetStartupLanguage(string language)
         {
+            language = language.Replace('_', '-');
             if (string.IsNullOrEmpty(language) || CultureInfo.CurrentUICulture.Name == language)
                 return;
 
-            string currentName = CultureInfo.CurrentUICulture.Name.Replace("_", "_").ToLower();
-            language = language.Replace("_", "-").ToLower();
-            if (currentName == language)
-                return;
-
+            CultureInfo? cultureInfo;
             try
             {
-                CultureInfo cultureInfo;
-                if (language.StartsWith("en", StringComparison.OrdinalIgnoreCase))
-                {
-                    cultureInfo = CultureInfo.GetCultureInfo("en");
-                }
-                else if (language.StartsWith("zh", StringComparison.OrdinalIgnoreCase))
-                {
-                    cultureInfo = CultureInfo.GetCultureInfo("zh-CN");
-                }
-                else if (language.StartsWith("ja", StringComparison.OrdinalIgnoreCase))
-                {
-                    cultureInfo = CultureInfo.GetCultureInfo("ja-JP");
-                }
-                else
-                {
-                    return;
-                }
-                CultureInfo.CurrentCulture = cultureInfo;
-                CultureInfo.CurrentUICulture = cultureInfo;
-                CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
-                CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-                Culture = cultureInfo;
+                cultureInfo = CultureInfo.GetCultureInfo(language);
             }
             catch
             {
+                Trace.WriteLine("Invalid culture: " + language);
+                return;
             }
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            Culture = cultureInfo;
+        }
+
+        public static CultureInfo SetLanguage(CultureInfo cultureInfo)
+        {
+            foreach (var lang in SupportedLanguage)
+            {
+                if (cultureInfo.Name.Equals(lang.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    Trace.WriteLine($"Matched culture: {cultureInfo.Name} => {lang.Name}");
+                    cultureInfo = lang;
+                    goto Apply;
+                }
+            }
+            if (!IsRootCulture(cultureInfo))
+            {
+                var scriptCulture = GetScriptCulture(cultureInfo);
+                foreach (var lang in SupportedLanguage)
+                {
+                    if (IsRootCulture(lang))
+                        continue;
+
+                    if (GetScriptCulture(lang).ThreeLetterWindowsLanguageName == scriptCulture.ThreeLetterWindowsLanguageName)
+                    {
+                        Trace.WriteLine($"Matched script culture: {cultureInfo.Name} => {lang.Name}");
+                        cultureInfo = lang;
+                        goto Apply;
+                    }
+                }
+            }
+            var rootCulture = GetRootCulture(cultureInfo);
+            foreach (var lang in SupportedLanguage)
+            {
+                if (GetRootCulture(lang).ThreeLetterWindowsLanguageName == rootCulture.ThreeLetterWindowsLanguageName)
+                {
+                    Trace.WriteLine($"Matched root culture: {cultureInfo.Name} => {lang.Name}");
+                    cultureInfo = lang;
+                    goto Apply;
+                }
+            }
+            cultureInfo = DefaultLanguage;
+            Trace.WriteLine($"Default culture: {cultureInfo.Name} => {DefaultLanguage.Name}");
+            Apply:
+            //CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+            //CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+            Culture = cultureInfo;
+            return cultureInfo;
+        }
+
+        public static CultureInfo GetRootCulture(CultureInfo cultureInfo)
+        {
+            if (IsRootCulture(cultureInfo))
+                return cultureInfo;
+
+            return GetRootCulture(cultureInfo.Parent);
+        }
+
+        public static CultureInfo GetScriptCulture(CultureInfo cultureInfo)
+        {
+            if (IsRootCulture(cultureInfo))
+                return cultureInfo;
+
+            var parent = cultureInfo.Parent;
+            if (IsRootCulture(parent))
+                return cultureInfo;
+
+            return GetScriptCulture(parent);
+        }
+
+        public static bool IsRootCulture(CultureInfo cultureInfo)
+        {
+            return string.IsNullOrEmpty(cultureInfo.Name) || cultureInfo.Name.Length <= 2;
         }
 
         private static void OnDispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
@@ -96,8 +148,9 @@ namespace OctopathTraveler
         {
             string content = $"Time: {DateTime.Now}\n" +
                 $"UI Language: {CultureInfo.CurrentUICulture.NativeName}({CultureInfo.CurrentUICulture.Name})\n" +
-                $"Resources Language: {Culture.NativeName}({Culture.Name})\n" +
-                $"{exception}";
+                $"Resources Language: {(Culture == null ? "": $"{Culture.NativeName}({Culture.Name})")}\n" +
+                $"SupportedLanguage: {SupportedLanguage})\n" +
+                $"{exception}\n";
             try
             {
                 File.AppendAllText("exception.log", content);
@@ -110,6 +163,10 @@ namespace OctopathTraveler
             if (result == MessageBoxResult.Yes || result == MessageBoxResult.OK)
             {
                 AboutWindow.ReportIssue();
+            }
+            if (Current.MainWindow == null)
+            {
+                Current.Shutdown(-1);
             }
         }
     }

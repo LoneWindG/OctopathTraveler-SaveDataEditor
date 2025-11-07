@@ -19,9 +19,11 @@
                     <MenuItem Header="{x:Static properties:Resources.MenuFileSaveAs}" Click="MenuItemFileSaveAs_Click"/>
                     <MenuItem Header="{x:Static properties:Resources.MenuFileSaveAsJson}" Click="MenuItemFileSaveAsJson_Click"/>
                     <MenuItem Header="{x:Static properties:Resources.MenuExportInfoExcel}" Click="MenuItemExportInfoExcel_Click"/>
+                    <MenuItem Header="{x:Static properties:Resources.MenuExportExampleSaveFile}" Click="MenuExportExampleSaveFile_Click"/>
                     <Separator/>
                     <MenuItem Header="{x:Static properties:Resources.MenuExit}" Click="MenuItemExit_Click"/>
                 </MenuItem>
+                <MenuItem Header="{x:Static properties:Resources.MenuLanguage}" Name="MenuItemLanguage"/>
                 <MenuItem Header="{x:Static properties:Resources.MenuAbout}" Click="MenuItemAbout_Click"/>
             </Menu>
             <ToolBar DockPanel.Dock="Top">
@@ -37,7 +39,7 @@
                 <Button Width="32" Height="32" Click="ToolBarConvertToJson_Click" ToolTip="{x:Static properties:Resources.ToolTipConvert}" >
                     <Image Source="/Resource/Convert.png"/>
                 </Button>
-                <Label Name="TopBar_LoadedInfoFile" VerticalAlignment="Center"/>
+                <Label Content="{Binding Info.LoadedInfoFile}" VerticalAlignment="Center"/>
             </ToolBar>
             <TabControl>
                 <TabItem Header="{x:Static properties:Resources.TabItemBasic}">
@@ -47,73 +49,111 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
-                            <ColumnDefinition Width="22"/>
-                            <ColumnDefinition Width="178"/>
+                            <ColumnDefinition Width="200"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="25"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
-                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="65"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="30"/>
                         </Grid.RowDefinitions>
-                        <Label Content="{x:Static properties:Resources.BasicPlayTime}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="0" Content="{x:Static properties:Resources.BasicPlayTime}" VerticalAlignment="Center"/>
                         <Label Grid.Row="1" Content="{x:Static properties:Resources.BasicSaveDate}" VerticalAlignment="Center"/>
-                        <Label Content="{Binding BasicData.PlayTime}" Margin="196,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
-                        <Label Grid.Row="1" Content="{Binding BasicData.SaveDate}" Margin="196,0,0,0" VerticalAlignment="Center" Grid.ColumnSpan="3"/>
                         <Label Grid.Row="2" Content="{x:Static properties:Resources.BasicMoney}" VerticalAlignment="Center"/>
                         <Label Grid.Row="3" Content="{x:Static properties:Resources.BasicHero}" VerticalAlignment="Center"/>
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BasicData.Money, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center" Grid.ColumnSpan="2"/>
-                        <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Info.CharaNames}" DisplayMemberPath="Name" VerticalContentAlignment="Center"
-                                  SelectedIndex="{Binding BasicData.Hero, Converter={StaticResource HeroIDConverter}}" Grid.ColumnSpan="2"/>
                         <Label Grid.Row="4" VerticalAlignment="Bottom">
-                            <TextBlock FontSize="15" TextWrapping="Wrap" Text="{x:Static properties:Resources.BasicAchievementProgress}"/>
+                            <TextBlock FontSize="18" TextWrapping="Wrap" Text="{x:Static properties:Resources.BasicAchievementProgress}"/>
                         </Label>
                         <Label Grid.Row="5" Content="{x:Static properties:Resources.BasicBattleCount}" VerticalAlignment="Center"/>
                         <Label Grid.Row="6" Content="{x:Static properties:Resources.BasicEscapeCount}" VerticalAlignment="Center"/>
                         <Label Grid.Row="7" Content="{x:Static properties:Resources.BasicTreasureCount}" VerticalAlignment="Center"/>
                         <Label Grid.Row="8" Content="{x:Static properties:Resources.BasicHiddenPointCount}"  VerticalAlignment="Center"/>
-                        <Label Grid.Row="9" VerticalAlignment="Center" ToolTip="" Name="LabelBasicItemCount">
-                            <TextBlock FontWeight="Bold" Text="{x:Static properties:Resources.BasicItemCount}"/>
-                        </Label>
-                        <Label Grid.Row="4" Margin="196,0,-300,0" VerticalContentAlignment="Bottom" Grid.ColumnSpan="3">
+                        <Label Grid.Row="9" Content="{x:Static properties:Resources.BasicItemFlag}" VerticalAlignment="Center"/>
+                        <Label Grid.Row="0" Grid.Column="1" Content="{Binding BasicData.PlayTime}" Margin="-3,0,0,0" VerticalAlignment="Center"/>
+                        <Label Grid.Row="1" Grid.Column="1" Content="{Binding BasicData.SaveDate}" Margin="-3,0,0,0" VerticalAlignment="Center"/>
+                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding BasicData.Money, UpdateSourceTrigger=PropertyChanged}" VerticalContentAlignment="Center"/>
+                        <ComboBox Grid.Row="3" Grid.Column="1" ItemsSource="{Binding Info.CharaNames}" DisplayMemberPath="Name" VerticalContentAlignment="Center"
+                                  SelectedIndex="{Binding BasicData.Hero, Converter={StaticResource HeroIDConverter}}"/>
+                        <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Margin="-3,0,0,0" VerticalContentAlignment="Bottom">
                             <TextBlock TextWrapping="WrapWithOverflow" Text="{x:Static properties:Resources.BasicAchievementTip}"/>
                         </Label>
                         <TextBox Grid.Row="5" Grid.Column="1" Text="{Binding BasicData.BattleCount, UpdateSourceTrigger=PropertyChanged}"
-                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistBattleCount}" Grid.ColumnSpan="2"/>
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistBattleCount}"/>
                         <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding BasicData.EscapeCount, UpdateSourceTrigger=PropertyChanged}"
-                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistEscapeCount}" Grid.ColumnSpan="2"/>
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistEscapeCount}"/>
                         <TextBox Grid.Row="7" Grid.Column="1" Text="{Binding BasicData.TreasureCount, UpdateSourceTrigger=PropertyChanged}"
-                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistTreasureCount}" Grid.ColumnSpan="2"/>
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistTreasureCount}"/>
                         <TextBox Grid.Row="8" Grid.Column="1" Text="{Binding BasicData.HiddenPointCount, UpdateSourceTrigger=PropertyChanged}"
-                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistHiddenPointCount}" Grid.ColumnSpan="2"/>
-                        <Label Grid.Row="9" Content="{Binding BasicData.ItemCount}" Margin="196,0,0,0" Grid.ColumnSpan="3"/>
+                                 VerticalContentAlignment="Center" IsEnabled="{Binding BasicData.IsExistHiddenPointCount}"/>
+                        <Button Grid.Row="9" Grid.Column="1" Content="==>" Click="ButtonGotoItemInventory_Click"/>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{x:Static properties:Resources.TabItemCharacter}">
+                <TabItem Header="{x:Static properties:Resources.TabItemCharacter}" Height="19" VerticalAlignment="Top">
                     <Grid>
                         <Grid.Resources>
                             <local:CharactorNameConverter x:Key="CharactorNameConverter"/>
                             <local:CharactorJobConverter x:Key="CharactorJobConverter"/>
                             <local:CharactorEquipmentConverter x:Key="CharactorEquipmentConverter"/>
+                            <local:PartyMemberConverter x:Key="PartyMemberConverter"/>
                         </Grid.Resources>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="200"/>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
-                        <ListBox Name="CharactorList" ItemsSource="{Binding Charactors}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Label Content="{Binding ID, Converter={StaticResource CharactorNameConverter}}"/>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ListBox Grid.Row="0" Name="CharactorList" ItemsSource="{Binding Charactors}">
+                                <ListBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <Label FontSize="12" Content="{Binding ID, Converter={StaticResource CharactorNameConverter}}"/>
+                                    </DataTemplate>
+                                </ListBox.ItemTemplate>
+                            </ListBox>
+                            <ListView Grid.Row="1" Height="180" ItemsSource="{Binding MainParty}"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                                <ListView.Resources>
+                                    <Style TargetType="GridViewColumnHeader">
+                                        <Setter Property="IsHitTestVisible" Value="False"/>
+                                    </Style>
+                                    <Style TargetType="ListViewItem">
+                                        <Style.Triggers>
+                                            <Trigger Property="IsSelected" Value="True">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                            </Trigger>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter Property="Background" Value="Transparent"/>
+                                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                            </Trigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </ListView.Resources>
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="{x:Static properties:Resources.TabItemParty}" Width="194">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <ComboBox Width="180" Height="25" FontSize="12" VerticalContentAlignment="Center"
+                                                              ItemsSource="{Binding Path=DataContext.Info.CharaNames, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:MainWindow}}"
+                                                              DisplayMemberPath="Name" SelectedIndex="{Binding ID, Converter={StaticResource PartyMemberConverter}}"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                        </Grid>
                         <Grid Grid.Column="1">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition/>
@@ -149,9 +189,11 @@
                             <Label Grid.Row="3" Content="RawMP"/>
                             <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding ElementName=CharactorList, Path=SelectedItem.RawMP, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Grid.Row="4" Content="FirstJob"/>
-                            <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Info.Jobs}" DisplayMemberPath="Name" SelectedIndex="{Binding ElementName=CharactorList, Path=SelectedItem.FirstJob, Converter={StaticResource CharactorJobConverter}}"/>
+                            <ComboBox Grid.Row="4" Grid.Column="1" ItemsSource="{Binding Info.Jobs}" DisplayMemberPath="Name" IsEnabled="False"
+                                      SelectedIndex="{Binding ElementName=CharactorList, Path=SelectedItem.FirstJob, Converter={StaticResource CharactorJobConverter}}"/>
                             <Label Grid.Row="5" Content="SecondJob"/>
-                            <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Info.Jobs}" DisplayMemberPath="Name" SelectedIndex="{Binding ElementName=CharactorList, Path=SelectedItem.SecondJob, Converter={StaticResource CharactorJobConverter}}"/>
+                            <ComboBox Grid.Row="5" Grid.Column="1" ItemsSource="{Binding Info.Jobs}" DisplayMemberPath="Name"
+                                      SelectedIndex="{Binding ElementName=CharactorList, Path=SelectedItem.SecondJob, Converter={StaticResource CharactorJobConverter}}"/>
                             <Label Grid.Row="6" Content="JobPoint"/>
                             <TextBox Grid.Row="6" Grid.Column="1" Text="{Binding ElementName=CharactorList, Path=SelectedItem.JobPoint, UpdateSourceTrigger=PropertyChanged}"/>
                             <Label Grid.Row="7" Content="HP+"/>
@@ -236,68 +278,119 @@
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{x:Static properties:Resources.TabItemItems}">
+                <TabItem Header="{x:Static properties:Resources.TabItemItems}" VerticalAlignment="Bottom">
                     <TabItem.Resources>
                         <local:ItemNameConverter x:Key="ItemNameConverter"/>
+                        <local:Boolean2VisibilityConverter x:Key="Boolean2VisibilityConverter"/>
                     </TabItem.Resources>
                     <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <ListBox Grid.Column="0" ItemsSource="{Binding Items}" VirtualizingStackPanel.VirtualizationMode="Recycling"  VirtualizingStackPanel.IsVirtualizing="True">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Grid.Column="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="50"/>
+                                <ColumnDefinition Width="300"/>
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="  ID"/>
+                            <Label Grid.Column="1" Content="  Name"/>
+                            <Label Grid.Column="2" Content=" Count"/>
+                        </Grid>
+                        <ListBox Grid.Row="1" Grid.Column="0" ItemsSource="{Binding Items}"
+                                 VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                 VirtualizingStackPanel.IsVirtualizing="True"
+                                 ScrollViewer.CanContentScroll="True"
+                                 VirtualizingPanel.ScrollUnit="Pixel">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <VirtualizingStackPanel Orientation="Horizontal">
                                         <Label Content="{Binding ID}" Width="50"/>
-                                        <Label Content="{Binding ID, Converter={StaticResource ItemNameConverter}}" Width="185"/>
-                                        <Label Content="Count: "/>
-                                        <TextBox Width="50" Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}"/>
-                                        <Button Content=" ... " Click="ButtonItem_Click"/>
+                                        <Label Content="{Binding ID, Converter={StaticResource ItemNameConverter}}" Width="300"/>
+                                        <TextBox Text="{Binding Count, UpdateSourceTrigger=PropertyChanged}" Width="60"/>
+                                        <Button Content=" ... " Click="ButtonItem_Click"
+                                                Visibility="{Binding CanChangeID, Converter={StaticResource Boolean2VisibilityConverter}}"
+                                                ToolTipService.InitialShowDelay="300" ToolTipService.ShowDuration="15000">
+                                            <Button.ToolTip>
+                                                <ToolTip HorizontalOffset="10">
+                                                    <TextBlock TextWrapping="Wrap" Width="350" Text="{x:Static properties:Resources.TabItemItemsTip}" />
+                                                </ToolTip>
+                                            </Button.ToolTip>
+                                        </Button>
                                     </VirtualizingStackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
+
+                    </Grid>
+                </TabItem>
+                <TabItem Header="{x:Static properties:Resources.TabItemItemInventory}" Name="TabItemItemInventory" VerticalAlignment="Bottom">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <ListView Grid.Column="0" ItemsSource="{Binding BasicData.ItemInventoryStates}"
+                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                  VirtualizingStackPanel.IsVirtualizing="True"
+                                  ScrollViewer.CanContentScroll="True">
+                            <ListView.View>
+                                <GridView>
+                                    <GridViewColumn Header="ID" DisplayMemberBinding="{Binding ID}" Width="50"/>
+                                    <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" Width="235"/>
+                                    <GridViewColumn Header="Type" DisplayMemberBinding="{Binding TypeName}" Width="85"/>
+                                    <GridViewColumn Header="#" DisplayMemberBinding="{Binding Order}" Width="35"/>
+                                    <GridViewColumn Header="Count" Width="50">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox Content="{Binding ItemCount}" IsChecked="{Binding IsOwned, Mode=OneWay}" IsEnabled="False"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                    <GridViewColumn Header="🏆" Width="30">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <CheckBox IsChecked="{Binding IsGot, Mode=OneWay}" IsEnabled="False" HorizontalContentAlignment="Center"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
                         <Grid Grid.Column="1">
                             <Grid.RowDefinitions>
+                                <RowDefinition Height="*"/>
                                 <RowDefinition Height="Auto"/>
-                                <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Grid Grid.Row="0">
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Label Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" HorizontalContentAlignment="Center">
-                                    <TextBlock TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemItemInventory}"/>
-                                </Label>
-                                <Label Grid.Row="1" Grid.Column="0" >
-                                    <TextBlock TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemItemInventoryTip}"/>
-                                </Label>
-                                <Button Grid.Row="0" Grid.Column="1" Content="{x:Static properties:Resources.ButtonExport}" Click="ButtonItemInventoryExport_Click"/>
-                                <Button Grid.Row="1" Grid.Column="1" Content="{x:Static properties:Resources.ButtonSwitchFilter}" MinWidth="90" Click="ButtonItemInventoryFilter_Click"/>
-                            </Grid>
-                            <ListBox Grid.Row="1" ItemsSource="{Binding Info.ItemInventory}"
-                                     VirtualizingStackPanel.VirtualizationMode="Recycling"  VirtualizingStackPanel.IsVirtualizing="True">
-                                <ListBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <VirtualizingStackPanel Orientation="Horizontal">
-                                            <CheckBox Content="{Binding Value}" IsChecked="{Binding IsOwned}" Width="60" VerticalAlignment="Center"/>
-                                            <Label Content="{Binding Name}" Width="210"/>
-                                            <Label Content="{Binding TypeAndIndex}"/>
-                                        </VirtualizingStackPanel>
-                                    </DataTemplate>
-                                </ListBox.ItemTemplate>
-                            </ListBox>
+                            <ListView Grid.Row="0" ItemsSource="{Binding BasicData.ItemInventoryTypeStates}"
+                                  VirtualizingStackPanel.VirtualizationMode="Recycling"
+                                  VirtualizingStackPanel.IsVirtualizing="True"
+                                  ScrollViewer.CanContentScroll="True">
+                                <ListView.View>
+                                    <GridView>
+                                        <GridViewColumn Header="Type" DisplayMemberBinding="{Binding Type}" Width="120"/>
+                                        <GridViewColumn Header="Count" DisplayMemberBinding="{Binding Count}" Width="65"/>
+                                        <GridViewColumn Header="🏆" Width="70">
+                                            <GridViewColumn.CellTemplate>
+                                                <DataTemplate>
+                                                    <CheckBox Content="{Binding Progress}" IsChecked="{Binding IsCompleted, Mode=OneWay}" IsEnabled="False"/>
+                                                </DataTemplate>
+                                            </GridViewColumn.CellTemplate>
+                                        </GridViewColumn>
+                                    </GridView>
+                                </ListView.View>
+                            </ListView>
+                            <TextBlock Grid.Row="1" TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemItemInventoryTip}" VerticalAlignment="Bottom"/>
                         </Grid>
                     </Grid>
                 </TabItem>
-                <TabItem Header="{x:Static properties:Resources.TabItemPlaces}" Height="19" VerticalAlignment="Top">
-                    <ListBox Grid.Column="0" ItemsSource="{Binding Places}" VirtualizingStackPanel.VirtualizationMode="Recycling"  VirtualizingStackPanel.IsVirtualizing="True">
+                <TabItem Header="{x:Static properties:Resources.TabItemPlaces}" VerticalAlignment="Top">
+                    <ListBox Grid.Column="0" ItemsSource="{Binding Places}"
+                             VirtualizingStackPanel.VirtualizationMode="Recycling"
+                             VirtualizingStackPanel.IsVirtualizing="True"
+                             ScrollViewer.CanContentScroll="True"
+                             VirtualizingPanel.ScrollUnit="Pixel">
                         <ListBox.ItemContainerStyle>
                             <Style  TargetType="{x:Type ListBoxItem}">
                                 <Setter Property="Template">
@@ -323,82 +416,64 @@
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
-                    <!--<Grid>
-                        <Grid.Resources>
-                            <local:PartyMemberConverter x:Key="PartyMemberConverter"/>
-                        </Grid.Resources>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0">
-                            <TextBlock TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemPlacesWarning}" />
-                        </Label>
-                        <ListBox ItemsSource="{Binding Places}" Grid.Row="1">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <CheckBox Content="{Binding ID}" IsChecked="{Binding Visit}" Width="50"/>
-                                    -->
-                    <!--<Label>
-                                        <TextBlock Text="{Binding Name}" Foreground="#D9D2E9"/>
-                                    </Label>-->
-                    <!--
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>-->
                 </TabItem>
-                <TabItem Header="{x:Static properties:Resources.TabItemTameMonster}">
-                    <TabItem.Resources>
-                        <local:TameMonsterConverter x:Key="TameMonsterConverter"/>
-                    </TabItem.Resources>
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <Label Grid.Row="0">
-                            <TextBlock TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemTameMonsterWarning}" />
-                        </Label>
-                        <ListBox ItemsSource="{Binding TameMonsters}" Grid.Row="1">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="Name "/>
-                                        <ComboBox ItemsSource="{Binding Path=DataContext.Info.TameMonsters, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:MainWindow}}"
-                                              DisplayMemberPath="Name" SelectedIndex="{Binding ID, Converter={StaticResource TameMonsterConverter}}"
-                                              Width="200"/>
-                                        <Label Content="Count "/>
-                                        <TextBox Text="{Binding Count,UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-                                        <CheckBox IsChecked="{Binding Used}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Grid>
-                    <!--<StackPanel Orientation="Vertical">
-                        <Label>
-                            <TextBlock TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemTameMonsterWarning}" />
-                        </Label>
-                        <ListBox ItemsSource="{Binding TameMonsters}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <StackPanel Orientation="Horizontal">
-                                        <Label Content="Name "/>
-                                        <ComboBox ItemsSource="{Binding Path=DataContext.Info.TameMonsters, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:MainWindow}}"
-                                              DisplayMemberPath="Name" SelectedIndex="{Binding ID, Converter={StaticResource TameMonsterConverter}}"
-                                              Width="200"/>
-                                        <Label Content="Count "/>
-                                        <TextBox Text="{Binding Count,UpdateSourceTrigger=PropertyChanged}" Width="80"/>
-                                        <CheckBox IsChecked="{Binding Used}"/>
-                                    </StackPanel>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </StackPanel>-->
+                <TabItem Header="{x:Static properties:Resources.TabItemTreasure}">
+                    <ListView ItemsSource="{Binding TreasureStates}"
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
+                              VirtualizingStackPanel.IsVirtualizing="True"
+                              ScrollViewer.CanContentScroll="True"
+                              VirtualizingPanel.ScrollUnit="Pixel">
+                        <ListView.Resources>
+                            <local:Num2VisibilityConverter x:Key="Num2VisibilityConverter"/>
+                        </ListView.Resources>
+                        <ListView.View>
+                            <GridView AllowsColumnReorder="False">
+                                <GridViewColumn DisplayMemberBinding="{Binding Info.Value}" Header="ID" Width="65"/>
+                                <GridViewColumn DisplayMemberBinding="{Binding Info.Name}" Header="Name" Width="220"/>
+                                <GridViewColumn Width="85">
+                                    <GridViewColumnHeader Click="MenuItemTreasureStateProgress_Click">
+                                        <TextBlock Text="{x:Static properties:Resources.TreasureStatesSummation}" FontWeight="Bold"/>
+                                        <GridViewColumnHeader.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Name="MenuItemTreasureStateAll" Header="All" Click="MenuItemTreasureStateAll_Click"/>
+                                                <MenuItem Name="MenuItemTreasureStateCompleted" Header="Completed"  Click="MenuItemTreasureStateCompleted_Click"/>
+                                                <MenuItem Name="MenuItemTreasureStateUncompleted" Header="Uncompleted"  Click="MenuItemTreasureStateUncompleted_Click"/>
+                                            </ContextMenu>
+                                        </GridViewColumnHeader.ContextMenu>
+                                    </GridViewColumnHeader>
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Content="{Binding SummationProgress}"
+                                                      IsChecked="{Binding IsCollectAll, Mode=OneWay}" IsEnabled="False"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Resources.TreasureStatesChest}" Width="85">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Content="{Binding ChestProgress}" IsChecked="{Binding IsCollectChest, Mode=OneWay}" IsEnabled="False"
+                                                      Visibility="{Binding Info.Chest, Converter={StaticResource Num2VisibilityConverter}}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="{x:Static properties:Resources.TreasureStatesHiddenItem}" Width="85">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <CheckBox Content="{Binding HiddenItemProgress}" IsChecked="{Binding IsCollectHiddenItem, Mode=OneWay}" IsEnabled="False"
+                                                      Visibility="{Binding Info.HiddenItem, Converter={StaticResource Num2VisibilityConverter}}"/>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn DisplayMemberBinding="{Binding Value}" Header="VALUE" Width="165"/>
+                            </GridView>
+                        </ListView.View>
+                    </ListView>
                 </TabItem>
                 <TabItem Header="{x:Static properties:Resources.TabItemWeak}">
-                    <ListView ItemsSource="{Binding EnemyWeaknesses}">
+                    <ListView ItemsSource="{Binding EnemyWeaknesses}"
+                              VirtualizingStackPanel.VirtualizationMode="Recycling"
+                              VirtualizingStackPanel.IsVirtualizing="True"
+                              ScrollViewer.CanContentScroll="True">
                         <ListView.View>
                             <GridView AllowsColumnReorder="False">
                                 <GridViewColumn Width="65">
@@ -506,70 +581,31 @@
                             </GridView>
                         </ListView.View>
                     </ListView>
-                    <!--<ListBox ItemsSource="{Binding EnemyWeaknesses}"
-                             VirtualizingStackPanel.VirtualizationMode="Recycling"  VirtualizingStackPanel.IsVirtualizing="True">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <VirtualizingStackPanel Orientation="Horizontal" VirtualizationMode="Recycling" >
-                                    <CheckBox Content="{Binding Num}" VerticalAlignment="Center"   Width="45"
-                                              IsChecked="{Binding IsBreakAll}"/>
-                                    <Label Content="{Binding Info.Name}" Width="165"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemSword}"
-                                              Margin="15,0,0,0" VerticalAlignment="Center"
-                                              IsChecked="{Binding Sword}" IsEnabled="{Binding Info.IsEnableSword}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemLance}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Lance}" IsEnabled="{Binding Info.IsEnableLance}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemDagger}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Dagger}" IsEnabled="{Binding Info.IsEnableDagger}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemAxe}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Axe}" IsEnabled="{Binding Info.IsEnableAxe}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemBow}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Bow}" IsEnabled="{Binding Info.IsEnableBow}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemRod}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Rod}" IsEnabled="{Binding Info.IsEnableRod}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemFire}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Fire}" IsEnabled="{Binding Info.IsEnableFire}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemIce}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Ice}" IsEnabled="{Binding Info.IsEnableIce}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemThunder}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Thunder}" IsEnabled="{Binding Info.IsEnableThunder}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemWind}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Wind}" IsEnabled="{Binding Info.IsEnableWind}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemLight}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Light}" IsEnabled="{Binding Info.IsEnableLight}"/>
-                                    <CheckBox Content="{x:Static properties:Resources.ItemDark}"
-                                              Margin="15,0,0,0"  VerticalAlignment="Center"
-                                              IsChecked="{Binding Dark}" IsEnabled="{Binding Info.IsEnableDark}"/>
-                                </VirtualizingStackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>-->
                 </TabItem>
-                <TabItem Header="{x:Static properties:Resources.TabItemParty}">
+                <TabItem Header="{x:Static properties:Resources.TabItemTameMonster}">
+                    <TabItem.Resources>
+                        <local:TameMonsterConverter x:Key="TameMonsterConverter"/>
+                    </TabItem.Resources>
                     <Grid>
-                        <Grid.Resources>
-                            <local:PartyMemberConverter x:Key="PartyMemberConverter"/>
-                        </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <ListBox ItemsSource="{Binding MainParty}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Label Grid.Row="1">
+                            <TextBlock TextWrapping="Wrap" Text="{x:Static properties:Resources.TabItemTameMonsterWarning}" />
+                        </Label>
+                        <ListBox Grid.Row="0" ItemsSource="{Binding TameMonsters}">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding Path=DataContext.Info.CharaNames, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:MainWindow}}"
-                                              DisplayMemberPath="Name" SelectedIndex="{Binding ID, Converter={StaticResource PartyMemberConverter}}"
+                                    <StackPanel Orientation="Horizontal">
+                                        <Label Content="Name "/>
+                                        <ComboBox ItemsSource="{Binding Path=DataContext.Info.TameMonsters, RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=local:MainWindow}}"
+                                              DisplayMemberPath="Name" SelectedIndex="{Binding ID, Converter={StaticResource TameMonsterConverter}}"
                                               Width="200"/>
+                                        <Label Content="Count "/>
+                                        <TextBox Text="{Binding Count,UpdateSourceTrigger=PropertyChanged}" Width="80"/>
+                                        <CheckBox Content="Used" IsChecked="{Binding Used}"/>
+                                    </StackPanel>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>
@@ -609,76 +645,6 @@
                             </ListBox.ItemTemplate>
                         </ListBox>
                     </Grid>
-                </TabItem>
-                <TabItem Header="{x:Static properties:Resources.TabItemTreasure}">
-                    <ListView ItemsSource="{Binding TreasureStates}">
-                        <ListView.Resources>
-                            <local:Num2VisibilityConverter x:Key="Num2VisibilityConverter"/>
-                        </ListView.Resources>
-                        <ListView.View>
-                            <GridView AllowsColumnReorder="False">
-                                <GridViewColumn DisplayMemberBinding="{Binding Info.Value}" Header="ID" Width="65"/>
-                                <GridViewColumn DisplayMemberBinding="{Binding Info.Name}" Header="Name" Width="220"/>
-                                <GridViewColumn Width="85">
-                                    <GridViewColumnHeader Click="MenuItemTreasureStateProgress_Click">
-                                        <TextBlock Text="{x:Static properties:Resources.TreasureStatesSummation}" FontWeight="Bold"/>
-                                        <GridViewColumnHeader.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Name="MenuItemTreasureStateAll" Header="All" Click="MenuItemTreasureStateAll_Click"/>
-                                                <MenuItem Name="MenuItemTreasureStateCompleted" Header="Completed"  Click="MenuItemTreasureStateCompleted_Click"/>
-                                                <MenuItem Name="MenuItemTreasureStateUncompleted" Header="Uncompleted"  Click="MenuItemTreasureStateUncompleted_Click"/>
-                                            </ContextMenu>
-                                        </GridViewColumnHeader.ContextMenu>
-                                    </GridViewColumnHeader>
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox Content="{Binding SummationProgress}"
-                                                      IsChecked="{Binding IsCollectAll}" IsEnabled="False"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="{x:Static properties:Resources.TreasureStatesChest}" Width="85">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox Content="{Binding ChestProgress}" IsChecked="{Binding IsCollectChest}" IsEnabled="False"
-                                                      Visibility="{Binding Info.Chest, Converter={StaticResource Num2VisibilityConverter}}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="{x:Static properties:Resources.TreasureStatesHiddenItem}" Width="85">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <CheckBox Content="{Binding HiddenItemProgress}" IsChecked="{Binding IsCollectHiddenItem}" IsEnabled="False"
-                                                      Visibility="{Binding Info.HiddenItem, Converter={StaticResource Num2VisibilityConverter}}"/>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn DisplayMemberBinding="{Binding Value}" Header="VALUE" Width="165"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
-                    <!--<ListBox ItemsSource="{Binding TreasureStates}"
-                             VirtualizingStackPanel.VirtualizationMode="Recycling"  VirtualizingStackPanel.IsVirtualizing="True">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <VirtualizingStackPanel Orientation="Horizontal">
-                                    <Label Content="{Binding Info.Value}" Width="80"/>
-                                    <Label Content="{Binding Info.Name}" Width="220"/>
-                                    <CheckBox Content="{x:Static properties:Resources.TreasureStatesSummation}" VerticalAlignment="Center"
-                                              IsChecked="{Binding IsCollectAll}" IsEnabled="False"/>
-                                    <Label Content="{Binding SummationProgress}" Width="50"/>
-                                    <CheckBox Content="{x:Static properties:Resources.TreasureStatesChest}" VerticalAlignment="Center"
-                                              IsChecked="{Binding IsCollectChest}" IsEnabled="False"/>
-                                    <Label Content="{Binding ChestProgress}" Width="50"/>
-                                    <CheckBox Content="{x:Static properties:Resources.TreasureStatesHiddenItem}" VerticalAlignment="Center"
-                                              IsChecked="{Binding IsCollectHiddenItem}" IsEnabled="False"/>
-                                    <Label Content="{Binding HiddenItemProgress}" Width="50"/>
-                                    <Label Content="VALUE"/>
-                                    <Label Content="{Binding Value}"/>
-                                </VirtualizingStackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>-->
                 </TabItem>
             </TabControl>
         </DockPanel>

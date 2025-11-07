@@ -1,10 +1,10 @@
-﻿using System.ComponentModel;
+using System.ComponentModel;
 
 namespace OctopathTraveler
 {
     class Item : INotifyPropertyChanged
 	{
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		private GVAS mGVAS;
 		public Item(uint address)
@@ -26,13 +26,21 @@ namespace OctopathTraveler
 			}
 			set
 			{
+				if (!CanChangeID)
+				{
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ID)));
+                    return;
+				}
+
 				GVASData data = mGVAS.Key("ItemID");
 				SaveData.Instance().WriteNumber(data.Address, data.Size, value);
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ID)));
 			}
 		}
 
-		public uint Count
+		public bool CanChangeID => ID == 0;
+
+        public uint Count
 		{
 			get
 			{
@@ -41,6 +49,12 @@ namespace OctopathTraveler
 			}
 			set
 			{
+				if (ID == 0 || (value == 0 && ID > 0))
+				{
+					PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));
+					return;
+                }
+
 				GVASData data = mGVAS.Key("Num");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 99);
 				PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Count)));

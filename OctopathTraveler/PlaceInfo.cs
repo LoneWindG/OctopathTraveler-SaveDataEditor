@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace OctopathTraveler
 {
     class PlaceInfo : NameValueInfo
     {
-        private static readonly Regex ColorRegex = new("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
+        public static readonly Regex ColorRegex = new("^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$");
 
         public string NameColor { get; private set; } = "Black";
         public string BgColor { get; private set; } = "White";

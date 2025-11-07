@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -11,26 +12,23 @@ namespace OctopathTraveler
 	{
 		public uint ID { get; set; }
 
-		public enum eType
-		{
-			item,
-			equipment,
-		};
+		private List<NameValueInfo> ChoiceItems { get; }
 
-		public eType Type { private get; set; } = eType.equipment;
-
-		public ItemChoiceWindow()
+        internal ItemChoiceWindow(uint id, List<NameValueInfo> choiceItems)
 		{
+			ID = id;
+            ChoiceItems = choiceItems;
 			InitializeComponent();
-		}
+        }
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
 		{
 			CreateItemList("");
-			foreach (var item in ListBoxItem.Items)
+			if (ID == 0) return;
+            foreach (var item in ListBoxItem.Items)
 			{
-				NameValueInfo info = item as NameValueInfo;
-				if (info.Value == ID)
+				NameValueInfo? info = item as NameValueInfo;
+				if (info?.Value == ID)
 				{
 					ListBoxItem.SelectedItem = item;
 					ListBoxItem.ScrollIntoView(item);
@@ -59,10 +57,10 @@ namespace OctopathTraveler
 		private void CreateItemList(string filter)
 		{
 			ListBoxItem.Items.Clear();
-			var items = Type == eType.item ? Info.Instance().Items : Info.Instance().Equipments;
-			if (string.IsNullOrWhiteSpace(filter))
+			if (ChoiceItems == null || ChoiceItems.Count == 0) return;
+            if (string.IsNullOrWhiteSpace(filter))
 			{
-                foreach (var item in items)
+                foreach (var item in ChoiceItems)
                 {
 					ListBoxItem.Items.Add(item);
                 }
@@ -71,7 +69,7 @@ namespace OctopathTraveler
 			{
 				if (uint.TryParse(filter, out var filterId))
 				{
-                    foreach (var item in items)
+                    foreach (var item in ChoiceItems)
                     {
                         if (item.Value == filterId)
                         {
@@ -81,7 +79,7 @@ namespace OctopathTraveler
 				}
 				else
 				{
-                    foreach (var item in items)
+                    foreach (var item in ChoiceItems)
                     {
                         if (item.Name.Contains(filter, StringComparison.OrdinalIgnoreCase))
                         {

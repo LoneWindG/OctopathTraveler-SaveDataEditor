@@ -61,16 +61,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Money 的本地化字符串。
-        /// </summary>
-        public static string BacisMoney {
-            get {
-                return ResourceManager.GetString("BacisMoney", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Achievement Progress: (Following data) 的本地化字符串。
+        ///   查找类似 🏆Achievement Progress: 的本地化字符串。
         /// </summary>
         public static string BasicAchievementProgress {
             get {
@@ -79,7 +70,8 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 If you want to modify the following data, you may need at least one count to exist. 的本地化字符串。
+        ///   查找类似 If you want to modify the following data, you may need at least one count to exist.
+        ///(Nintendo Switch games do not have an achievement system, so save data may not contain achievement statistics.) 的本地化字符串。
         /// </summary>
         public static string BasicAchievementTip {
             get {
@@ -115,7 +107,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 HiddenPointCount 的本地化字符串。
+        ///   查找类似 Eagle-Eyed 的本地化字符串。
         /// </summary>
         public static string BasicHiddenPointCount {
             get {
@@ -124,11 +116,11 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 ItemCount 的本地化字符串。
+        ///   查找类似 Collector 的本地化字符串。
         /// </summary>
-        public static string BasicItemCount {
+        public static string BasicItemFlag {
             get {
-                return ResourceManager.GetString("BasicItemCount", resourceCulture);
+                return ResourceManager.GetString("BasicItemFlag", resourceCulture);
             }
         }
         
@@ -160,7 +152,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 TreasureCount 的本地化字符串。
+        ///   查找类似 Treasure Hunter 的本地化字符串。
         /// </summary>
         public static string BasicTreasureCount {
             get {
@@ -178,11 +170,12 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 SwitchFilter 的本地化字符串。
+        ///   查找 System.Byte[] 类型的本地化资源。
         /// </summary>
-        public static string ButtonSwitchFilter {
+        public static byte[] ExampleSaveFile {
             get {
-                return ResourceManager.GetString("ButtonSwitchFilter", resourceCulture);
+                object obj = ResourceManager.GetObject("ExampleSaveFile", resourceCulture);
+                return ((byte[])(obj));
             }
         }
         
@@ -359,15 +352,6 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Knowledge (Achievements don&apos;t require collecting these (maybe)) 的本地化字符串。
-        /// </summary>
-        public static string ItemKnowledgeTip {
-            get {
-                return ResourceManager.GetString("ItemKnowledgeTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Lance 的本地化字符串。
         /// </summary>
         public static string ItemLance {
@@ -440,15 +424,6 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Valuable (Part of it, not all of it) 的本地化字符串。
-        /// </summary>
-        public static string ItemValuableTip {
-            get {
-                return ResourceManager.GetString("ItemValuableTip", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Wind 的本地化字符串。
         /// </summary>
         public static string ItemWind {
@@ -503,7 +478,26 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 (_E)xport Embedded Info Excel... 的本地化字符串。
+        ///   查找类似 Export Example Save File 的本地化字符串。
+        /// </summary>
+        public static string MenuExportExampleSaveFile {
+            get {
+                return ResourceManager.GetString("MenuExportExampleSaveFile", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Example save file description:
+        ///This example save file is my personal save file with all achievements. You can use it as a reference if you want to complete all achievements. 的本地化字符串。
+        /// </summary>
+        public static string MenuExportExampleSaveFileTip {
+            get {
+                return ResourceManager.GetString("MenuExportExampleSaveFileTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Export Embedded Info Excel... 的本地化字符串。
         /// </summary>
         public static string MenuExportInfoExcel {
             get {
@@ -557,6 +551,15 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
+        ///   查找类似 (_L)anguage 的本地化字符串。
+        /// </summary>
+        public static string MenuLanguage {
+            get {
+                return ResourceManager.GetString("MenuLanguage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Load Success 的本地化字符串。
         /// </summary>
         public static string MessageLoadSuccess {
@@ -602,7 +605,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Inventory (Owned or unowned) 的本地化字符串。
+        ///   查找类似 🏆Item Collector 的本地化字符串。
         /// </summary>
         public static string TabItemItemInventory {
             get {
@@ -611,8 +614,9 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 The check box is only for display, and will not modify the &quot;save data&quot;;
-        ///If the item ID is 0, it means that the ID of the item is not known, and it is impossible to know whether it is already owned from the &quot;save data&quot;. 的本地化字符串。
+        ///   查找类似 Collector Achievement Tip
+        ///Knowledge: Don&apos;t require collecting these.
+        ///Valuable: For 325/326/327, you should only need to retrieve any one of them; for 311/312, you may only need to retrieve one of them. 的本地化字符串。
         /// </summary>
         public static string TabItemItemInventoryTip {
             get {
@@ -630,6 +634,16 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
+        ///   查找类似 The entry with ID 0 at the top of the list indicates that item data is not saved at this location.
+        ///To add an item you do not own, click the button to select and add a new item to this location. 的本地化字符串。
+        /// </summary>
+        public static string TabItemItemsTip {
+            get {
+                return ResourceManager.GetString("TabItemItemsTip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Party 的本地化字符串。
         /// </summary>
         public static string TabItemParty {
@@ -639,7 +653,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Places 的本地化字符串。
+        ///   查找类似 🏆Places 的本地化字符串。
         /// </summary>
         public static string TabItemPlaces {
             get {
@@ -684,7 +698,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 TreasureStates 的本地化字符串。
+        ///   查找类似 🏆Treasure &amp; HiddenItem 的本地化字符串。
         /// </summary>
         public static string TabItemTreasure {
             get {
@@ -693,7 +707,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Weakness 的本地化字符串。
+        ///   查找类似 🏆Weakness 的本地化字符串。
         /// </summary>
         public static string TabItemWeak {
             get {
@@ -738,7 +752,7 @@ namespace OctopathTraveler.Properties {
         }
         
         /// <summary>
-        ///   查找类似 Chest 的本地化字符串。
+        ///   查找类似 Treasure 的本地化字符串。
         /// </summary>
         public static string TreasureStatesChest {
             get {

@@ -6,7 +6,7 @@ namespace OctopathTraveler
     class NameValueInfo : IRowParser
     {
         public uint Value { get; set; }
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         public virtual bool CheckHeaderRow(IDictionary<string, object> row)
         {
@@ -21,16 +21,27 @@ namespace OctopathTraveler
 
         public virtual bool Parse(dynamic row)
         {
-            var cell0 = row.A?.ToString();
+            if (row.A == null)
+                return false;
+
+            var cell0 = row.A.ToString() ?? string.Empty;
             if (cell0.Length >= 3 && cell0[0] == '0' && cell0[1] == 'x')
             {
                 Value = Convert.ToUInt32(cell0, 16);
             }
             else
             {
-                Value = Convert.ToUInt32(cell0);
+                try
+                {
+                    Value = Convert.ToUInt32(cell0);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
             }
-            Name = row.B?.ToString();
+            Name = row.B?.ToString() ?? string.Empty;
             return !string.IsNullOrWhiteSpace(Name);
         }
     }

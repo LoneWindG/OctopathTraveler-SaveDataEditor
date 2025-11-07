@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Text;
 using System.Windows;
@@ -17,7 +19,21 @@ namespace OctopathTraveler
         public MainWindow()
         {
             InitializeComponent();
-            SetBasicDataTip();
+            MenuItemLanguage.Items.Clear();
+            foreach (var lang in App.SupportedLanguage)
+            {
+                bool isCurrent = Culture == lang;
+                var item = new MenuItem
+                {
+                    Header = App.GetScriptCulture(lang).NativeName,
+                    IsCheckable = true,
+                    IsChecked = isCurrent,
+                    DataContext = lang
+                };
+
+                item.Click += MenuItemLanguageOption_Click;
+                MenuItemLanguage.Items.Add(item);
+            }
         }
 
         private void Window_PreviewDragOver(object sender, DragEventArgs e)
@@ -28,16 +44,17 @@ namespace OctopathTraveler
         private void Window_Drop(object sender, DragEventArgs e)
         {
             if (e.Data.GetData(DataFormats.FileDrop) is not string[] files) return;
-            if (!File.Exists(files[0])) return;
+            if (files.Length == 0 || !File.Exists(files[0])) return;
 
-            SaveData.Instance().Open(files[0]);
-            Init();
-            MessageBox.Show(MessageLoadSuccess);
+            Open(files[0]);
         }
 
         private void MenuItemFileOpen_Click(object sender, RoutedEventArgs e)
         {
-            Load(false);
+            var dlg = new OpenFileDialog();
+            if (!dlg.ShowDialog().GetValueOrDefault()) return;
+
+            Open(dlg.FileName);
         }
 
         private void MenuItemFileSave_Click(object sender, RoutedEventArgs e)
@@ -53,7 +70,7 @@ namespace OctopathTraveler
         private void MenuItemFileSaveAs_Click(object sender, RoutedEventArgs e)
         {
             var dlg = new SaveFileDialog();
-            if (dlg.ShowDialog() == false) return;
+            if (!dlg.ShowDialog().GetValueOrDefault()) return;
 
             if (string.Equals(dlg.FileName, SaveData.Instance().FileName))
             {
@@ -99,6 +116,28 @@ namespace OctopathTraveler
             MessageBox.Show(isSaveAny ? MessageSaveSuccess : MeaageSaveFail);
         }
 
+        private void MenuExportExampleSaveFile_Click(object sender, RoutedEventArgs e)
+        {
+            var exampleSaveData = ExampleSaveFile;
+            if (exampleSaveData == null || exampleSaveData.Length == 0)
+            {
+                MessageBox.Show("File not found", MeaageSaveFail);
+                return;
+            }
+            MessageBox.Show(MenuExportExampleSaveFileTip, MenuExportExampleSaveFile);
+
+            var dlg = new SaveFileDialog
+            {
+                InitialDirectory = Directory.GetCurrentDirectory(),
+                FileName = "SampleSaveFile",
+            };
+            if (!dlg.ShowDialog().GetValueOrDefault())
+                return;
+
+            File.WriteAllBytes(dlg.FileName, exampleSaveData);
+            MessageBox.Show(MessageSaveSuccess, MenuExportExampleSaveFile);
+        }
+
         private void MenuItemExit_Click(object sender, RoutedEventArgs e)
         {
             Close();
@@ -109,9 +148,31 @@ namespace OctopathTraveler
             new AboutWindow().ShowDialog();
         }
 
+        private void MenuItemLanguageOption_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not MenuItem clickedItem) return;
+            if (clickedItem.DataContext is not CultureInfo cultureInfo) return;
+
+            if (cultureInfo == Culture)
+            {
+                clickedItem.IsChecked = true;
+                return;
+            }
+            App.SetLanguage(cultureInfo);
+            var oldDataContext = DataContext;
+            var newWindow = new MainWindow();
+            if (oldDataContext is not null)
+            {
+                Info.Release();
+                newWindow.Init();
+            }
+            newWindow.Show();
+            Close();
+        }
+
         private void ToolBarFileOpen_Click(object sender, RoutedEventArgs e)
         {
-            Load(false);
+            MenuItemFileOpen_Click(sender, e);
         }
 
         private void ToolBarFileSave_Click(object sender, RoutedEventArgs e)
@@ -135,17 +196,21 @@ namespace OctopathTraveler
             SetTreasureStateFilter(0);
             _itemInventoryFilter = 0;
             DataContext = new DataContext();
-            TopBar_LoadedInfoFile.Content = Info.LoadedInfoFile;
         }
 
-        private void Load(bool force)
+        private void Open(string fileName)
         {
-            var dlg = new OpenFileDialog();
-            if (dlg.ShowDialog() == false) return;
-
-            SaveData.Instance().Open(dlg.FileName);
+            SaveData.Instance().Open(fileName);
             Init();
-            MessageBox.Show(MessageLoadSuccess);
+            string backupFile = SaveData.Instance().BackupFileName;
+            if (!string.IsNullOrEmpty(backupFile) && File.Exists(backupFile))
+            {
+                MessageBox.Show($"Backup:\n" + backupFile, MessageLoadSuccess);
+            }
+            else
+            {
+                MessageBox.Show("No backup", MessageLoadSuccess);
+            }
         }
 
         private void Save()
@@ -173,7 +238,7 @@ namespace OctopathTraveler
                 }
             }
 
-            string folder = Path.GetDirectoryName(fileName);
+            string folder = Path.GetDirectoryName(fileName) ?? string.Empty;
             var saveDialog = new SaveFileDialog
             {
                 InitialDirectory = string.IsNullOrEmpty(folder) ? Directory.GetCurrentDirectory() : folder,
@@ -184,7 +249,7 @@ namespace OctopathTraveler
                 return;
 
             bool saved;
-            Exception ex;
+            Exception? ex;
 
             if (convertOtherFile)
                 (saved, ex) = GvasFormat.GvasConverter.Convert2JsonFile(saveDialog.FileName, File.OpenRead(fileName));
@@ -203,6 +268,11 @@ namespace OctopathTraveler
             {
                 MessageBox.Show(saved ? MessageSaveSuccess : MeaageSaveFail);
             }
+        }
+
+        private void ButtonGotoItemInventory_Click(object sender, RoutedEventArgs e)
+        {
+            TabItemItemInventory.IsSelected = true;
         }
 
         private void ButtonSword_Click(object sender, RoutedEventArgs e)
@@ -295,24 +365,34 @@ namespace OctopathTraveler
 
         private void ButtonItem_Click(object sender, RoutedEventArgs e)
         {
-            if (sender is Button { DataContext: Item item })
+            if (sender is Button { DataContext: Item currentItem })
             {
-                var window = new ItemChoiceWindow
+                var items = ((DataContext)DataContext).Items;
+                HashSet<uint> ownedItemIds = new();
+                foreach (var item in items)
                 {
-                    Type = ItemChoiceWindow.eType.item,
-                    ID = item.ID
-                };
+                    if (item.ID != 0)
+                        ownedItemIds.Add(item.ID);
+                }
+
+                var choiceItems = new List<NameValueInfo>();
+                foreach (var item in Info.Instance().Items)
+                {
+                    if (!ownedItemIds.Contains(item.Value))
+                    {
+                        choiceItems.Add(item);
+                    }
+                }
+
+                var window = new ItemChoiceWindow(currentItem.ID, choiceItems);
                 window.ShowDialog();
-                item.ID = window.ID;
+                currentItem.ID = window.ID;
             }
         }
 
-        private uint ChoiceEquipment(uint id)
+        private static uint ChoiceEquipment(uint id)
         {
-            var window = new ItemChoiceWindow
-            {
-                ID = id
-            };
+            var window = new ItemChoiceWindow(id, Info.Instance().Equipments);
             window.ShowDialog();
             return window.ID;
         }
@@ -345,7 +425,11 @@ namespace OctopathTraveler
                     }
 
                     AppendNum(builder, "Completed", count, enermies.Count);
-                    AppendNum(builder, "Uncompleted", enermies.Count - count, enermies.Count);
+                    int uncompletedCount = enermies.Count - count;
+                    if (uncompletedCount > 0)
+                    {
+                        AppendNum(builder, "Uncompleted", uncompletedCount, enermies.Count);
+                    }
                     text = builder.ToString();
                 }
             }
@@ -423,7 +507,11 @@ namespace OctopathTraveler
                     }
 
                     AppendNum(builder, "Completed", completedCount, (uint)treasureStates.Count);
-                    AppendNum(builder, "Uncompleted", (uint)treasureStates.Count - completedCount, (uint)treasureStates.Count);
+                    uint uncompletedCount = (uint)treasureStates.Count - completedCount;
+                    if (uncompletedCount > 0)
+                    {
+                        AppendNum(builder, "Uncompleted", uncompletedCount, (uint)treasureStates.Count);
+                    }
                     AppendNum(builder, TreasureStatesSummation, completedChest + completedHiddenItem, totalChest + totalHiddenItem);
                     AppendNum(builder, TreasureStatesChest, completedChest, totalChest);
                     AppendNum(builder, TreasureStatesHiddenItem, completedHiddenItem, totalHiddenItem);
@@ -441,7 +529,7 @@ namespace OctopathTraveler
             if (DataContext is not DataContext dataContext)
                 return;
 
-            var collectionView = CollectionViewSource.GetDefaultView(dataContext.Info.ItemInventory);
+            var collectionView = CollectionViewSource.GetDefaultView(dataContext.BasicData.ItemInventoryStates);
             if (_itemInventoryFilter > 0)
             {
                 _itemInventoryFilter = 0;
@@ -450,70 +538,13 @@ namespace OctopathTraveler
             else if (_itemInventoryFilter < 0)
             {
                 _itemInventoryFilter = 1;
-                collectionView.Filter = obj => ((InventoryItemInfo)obj).IsOwned;
+                collectionView.Filter = obj => ((ItemInventoryState)obj).IsGot;
             }
             else
             {
                 _itemInventoryFilter = -1;
-                collectionView.Filter = obj => !((InventoryItemInfo)obj).IsOwned;
+                collectionView.Filter = obj => !((ItemInventoryState)obj).IsGot;
             }
-        }
-
-        private void ButtonItemInventoryExport_Click(object sender, EventArgs e)
-        {
-            if (DataContext == null)
-                return;
-
-            string name;
-            Func<InventoryItemInfo, bool>? filter = null;
-            bool isAppendState = false;
-            if (_itemInventoryFilter == 0)
-            {
-                name = "item_inventory";
-                isAppendState = true;
-            }
-            else if (_itemInventoryFilter > 0)
-            {
-                name = "item_owned";
-                filter = info => info.IsOwned;
-            }
-            else
-            {
-                name = "item_unowned";
-                filter = info => !info.IsOwned;
-            }
-            var saveDialog = new SaveFileDialog
-            {
-                InitialDirectory = Directory.GetCurrentDirectory(),
-                FileName = name + ".txt",
-                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
-            };
-            if (saveDialog.ShowDialog() == false)
-                return;
-
-            var builder = new StringBuilder(1024);
-            foreach (var item in Info.Instance().ItemInventory)
-            {
-                if (filter != null && !filter(item))
-                    continue;
-
-                builder.Append(item.Value);
-                builder.Append('\t');
-                builder.Append(item.TypeAndIndex);
-                builder.Append('\t');
-                if (isAppendState && !item.IsOwned)
-                {
-                    builder.Append(item.Name);
-                    builder.Append('\t');
-                    builder.AppendLine("🚫");
-                }
-                else
-                {
-                    builder.AppendLine(item.Name);
-                }
-            }
-            File.WriteAllText(saveDialog.FileName, builder.ToString());
-            MessageBox.Show(MessageSaveSuccess);
         }
 
         private void MenuItemTreasureStateAll_Click(object sender, RoutedEventArgs e)
@@ -546,39 +577,6 @@ namespace OctopathTraveler
                 collectionView.Filter = obj => !((TreasureState)obj).IsCollectAll;
             else
                 collectionView.Filter = null;
-        }
-
-        private void SetBasicDataTip()
-        {
-            static void AppendLine(StringBuilder builder, int count, string type)
-            {
-                builder.Append(count);
-                builder.Append('\t');
-                builder.Append(type);
-                builder.Append('\n');
-            }
-
-            var tipBuilder = new StringBuilder(256);
-
-            tipBuilder.Append("Count\tType\n");
-            AppendLine(tipBuilder, 122, TabItemItems);
-            AppendLine(tipBuilder, 33, ItemSword);
-            AppendLine(tipBuilder, 29, ItemLance);
-            AppendLine(tipBuilder, 29, ItemDagger);
-            AppendLine(tipBuilder, 33, ItemAxe);
-            AppendLine(tipBuilder, 30, ItemBow);
-            AppendLine(tipBuilder, 32, ItemRod);
-            AppendLine(tipBuilder, 18, ItemShield);
-            AppendLine(tipBuilder, 42, ItemHead);
-            AppendLine(tipBuilder, 50, ItemBody);
-            AppendLine(tipBuilder, 37, ItemAccessory);
-            AppendLine(tipBuilder, 16, ItemMaterial);
-            AppendLine(tipBuilder, 17, ItemValuableTip);
-            AppendLine(tipBuilder, 61, ItemKnowledgeTip);
-
-            tipBuilder.Remove(tipBuilder.Length - 1, 1);
-            LabelBasicItemCount.ToolTip = tipBuilder.ToString();
-            ToolTipService.SetInitialShowDelay(LabelBasicItemCount, 150);
         }
     }
 }

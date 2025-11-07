@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Text;
+using System;
 
 namespace OctopathTraveler
 {
@@ -12,9 +10,9 @@ namespace OctopathTraveler
         private string value;
 
         //I don't know how to make the CheckBox control read-only, so I can only keep an empty set method
-        public bool IsCollectAll { get => summation == Info.Summation; set { } }
-        public bool IsCollectChest { get => chest == Info.Chest; set { } }
-        public bool IsCollectHiddenItem { get => hiddenItem == Info.HiddenItem; set { } }
+        public bool IsCollectAll => summation == Info.Summation;
+        public bool IsCollectChest => chest == Info.Chest;
+        public bool IsCollectHiddenItem => hiddenItem == Info.HiddenItem;
 
         public string SummationProgress => $"{summation}/{Info.Summation}";
         public string ChestProgress => $"{chest}/{Info.Chest}";

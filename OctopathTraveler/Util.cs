@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OctopathTraveler
@@ -11,17 +12,13 @@ namespace OctopathTraveler
 			SaveData.Instance().WriteNumber(address, size, value);
 		}
 
-		public static uint? FindFirstAddress(string name, uint? index)
+		public static uint? FindFirstAddress(string name, uint? startAddress, bool required = true)
 		{
-			return index != null && TryFindFirstAddress(name, index.Value, out uint address) ? address : null;
-        }
+            var addresses = SaveData.Instance().FindAddress(name, startAddress ?? 0, true);
+			if (addresses.Count > 0)
+				return addresses[0];
 
-		public static bool TryFindFirstAddress(string name, uint index, out uint address)
-		{
-			var addresses = SaveData.Instance().FindAddress(name, index);
-			bool found = addresses.Count > 0;
-			address = found ? addresses[0] : uint.MaxValue;
-			return found;
+			return required ? throw new KeyNotFoundException($"Address for '{name}' not found.") : null;
         }
 
 		public static uint ReadNumber(this GVASData gvasData)

@@ -1,19 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
 
 namespace OctopathTraveler
 {
     class SaveData
     {
-        public static bool IsReadonlyMode = false;
+        public static bool IsReadonlyMode { get; } = ParseBoolConfig(Environment.GetEnvironmentVariable("READONLY_MODE"), false);
 
         private static SaveData? mThis;
-        private string mFileName = string.Empty;
         private byte[] mBuffer = Array.Empty<byte>();
         private readonly System.Text.Encoding mEncode = System.Text.Encoding.ASCII;
         public uint Adventure { private get; set; } = 0;
-        public string FileName => mFileName;
+        public string FileName { get; private set; } = string.Empty;
+        public string BackupFileName { get; private set; } = string.Empty;
 
         private SaveData()
         { }
@@ -23,26 +24,49 @@ namespace OctopathTraveler
             return mThis ??= new SaveData();
         }
 
-        public bool Open(string filename)
-        {
-            mFileName = filename;
-            mBuffer = File.ReadAllBytes(mFileName);
+        private readonly Dictionary<char, List<uint>> _charIndex = new();
 
+        public void Open(string filename)
+        {
+            mBuffer = File.ReadAllBytes(filename);
+            FileName = filename;
             Backup();
-            return true;
+            BuildCharIndex();
+        }
+
+        private void BuildCharIndex()
+        {
+            _charIndex.Clear();
+            if (mBuffer == null || mBuffer.Length == 0) return;
+
+            int len = mBuffer.Length;
+            for (uint i = 0; i < len; i++)
+            {
+                byte b = mBuffer[i];
+                if ((b >= 'a' && b <= 'z') || (b >= 'A' && b <= 'Z'))
+                {
+                    char c = (char)b;
+                    if (!_charIndex.TryGetValue(c, out var list))
+                    {
+                        list = new List<uint>();
+                        _charIndex.Add(c, list);
+                    }
+                    list.Add(i);
+                }
+            }
         }
 
         public bool Save()
         {
-            if (IsReadonlyMode || mFileName == null || mBuffer == null) return false;
-            File.WriteAllBytes(mFileName, mBuffer);
+            if (IsReadonlyMode || string.IsNullOrEmpty(FileName) || mBuffer == null || mBuffer.Length <= 0) return false;
+            File.WriteAllBytes(FileName, mBuffer);
             return true;
         }
 
         public bool SaveAs(string filenname)
         {
-            if (mBuffer == null) return false;
-            if (string.Equals(mFileName, filenname)) return false;
+            if (mBuffer == null || mBuffer.Length <= 0) return false;
+            if (string.Equals(FileName, filenname, StringComparison.OrdinalIgnoreCase)) return false;
             File.WriteAllBytes(filenname, mBuffer);
             return true;
         }
@@ -175,28 +199,75 @@ namespace OctopathTraveler
             }
         }
 
-        public List<uint> FindAddress(string name, uint? index)
+        public IList<uint> FindAddress(string name, uint startAddress, bool onlyFirst = false)
         {
-            List<uint> result = new List<uint>();
-            if (index == null) return result;
+            if (mBuffer == null || string.IsNullOrWhiteSpace(name)) return Array.Empty<uint>();
 
-            for (; index < mBuffer.Length; index++)
+            char firstChar = name[0];
+            if (!_charIndex.TryGetValue(firstChar, out var candidates))
             {
-                if (mBuffer[index.Value] != name[0]) continue;
+                return FindAddressSlow(name, startAddress, onlyFirst);
+            }
+
+            IList<uint>? result = null;
+            ReadOnlySpan<byte> nameSpan = System.Text.Encoding.ASCII.GetBytes(name);
+            int nameLen = nameSpan.Length;
+            int bufferLen = mBuffer.Length;
+
+            foreach (var addr in candidates)
+            {
+                if (addr < startAddress) continue;
+                if (addr + nameLen > bufferLen) continue;
+                if (new ReadOnlySpan<byte>(mBuffer, (int)addr, nameLen).SequenceEqual(nameSpan))
+                {
+                    if (onlyFirst)
+                    {
+                        result = new uint[1] { addr };
+                        break;
+                    }
+                    result ??= new List<uint>();
+                    result.Add(addr);
+                }
+            }
+            return result ?? Array.Empty<uint>();
+        }
+
+        private IList<uint> FindAddressSlow(string name, uint startAddress, bool onlyFirst = false)
+        {
+            if (string.IsNullOrWhiteSpace(name) || mBuffer == null) return Array.Empty<uint>();
+
+            IList<uint>? result = null;
+            ReadOnlySpan<byte> nameSpan = System.Text.Encoding.ASCII.GetBytes(name);
+            int nameLen = nameSpan.Length;
+            int bufferLen = mBuffer.Length;
+
+            uint addr = startAddress;
+            while (addr <= bufferLen - nameLen)
+            {
+                if (mBuffer[addr] != nameSpan[0])
+                {
+                    addr++;
+                    continue;
+                }
 
                 int len = 1;
-                for (; len < name.Length; len++)
+                for (; len < nameLen; len++)
                 {
-                    if (mBuffer[index.Value + len] != name[len]) break;
+                    if (mBuffer[addr + len] != nameSpan[len]) break;
                 }
-                if (len >= name.Length)
+                if (len >= nameLen)
                 {
-                    result.Add(index.Value);
+                    if (onlyFirst)
+                    {
+                        result = new uint[1] { addr };
+                        break;
+                    }
+                    result ??= new List<uint>();
+                    result.Add(addr);
                 }
-
-                index += (uint)len;
+                addr += (uint)len;
             }
-            return result;
+            return result ?? Array.Empty<uint>();
         }
 
         private uint CalcAddress(uint address)
@@ -209,13 +280,46 @@ namespace OctopathTraveler
             if (IsReadonlyMode)
                 return;
 
+            if (mBuffer == null || mBuffer.Length <= 0) return;
+
             string path = Path.Combine(Directory.GetCurrentDirectory(), "OctopathTraveler Backup");
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
-            path = Path.Combine(path, $"{Path.GetFileName(mFileName)}-{DateTime.Now:yyyy-MM-dd-HH-mm}");
+            var hash = MD5.HashData(mBuffer);
+            path = Path.Combine(path, $"{Path.GetFileName(FileName)} - {Convert.ToHexString(hash)}");
             File.WriteAllBytes(path, mBuffer);
+            BackupFileName = path;
+        }
+
+        private static bool ParseBoolConfig(string? value, bool defaultValue = false)
+        {
+            if (string.IsNullOrWhiteSpace(value))
+                return defaultValue;
+
+            var v = value.Trim().ToLowerInvariant();
+            switch (v)
+            {
+                case "1":
+                case "true":
+                case "yes":
+                case "y":
+                case "on":
+                case "enable":
+                case "enabled":
+                    return true;
+                case "0":
+                case "false":
+                case "no":
+                case "n":
+                case "off":
+                case "disable":
+                case "disabled":
+                    return false;
+            }
+
+            return defaultValue;
         }
     }
 }

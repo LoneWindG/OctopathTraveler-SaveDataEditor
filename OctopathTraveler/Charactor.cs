@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System;
 using System.ComponentModel;
 
 
@@ -10,7 +6,7 @@ namespace OctopathTraveler
 {
 	class Charactor : INotifyPropertyChanged, IGVASRenameKey
 	{
-		public event PropertyChangedEventHandler PropertyChanged;
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		private GVAS mGVAS;
 		public Charactor(uint address)
@@ -55,7 +51,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("Level");
 				Util.WriteNumber(data.Address, data.Size, value, 1, 99);
-			}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Lv)));
+
+            }
 		}
 
 		public uint Exp
@@ -69,8 +67,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("Exp");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(Exp)));
+            }
+        }
 
 		public uint RawHP
 		{
@@ -83,8 +82,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("RawHP");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RawHP)));
+            }
+        }
 
 		public uint RawMP
 		{
@@ -97,8 +97,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("RawMP");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RawMP)));
+            }
+        }
 
 		public uint FirstJob
 		{
@@ -106,13 +107,14 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("FirstJobID");
 				return SaveData.Instance().ReadNumber(data.Address, data.Size);
-			}
-			set
-			{
-				GVASData data = mGVAS.Key("FirstJobID");
-				SaveData.Instance().WriteNumber(data.Address, data.Size, value);
-			}
-		}
+            }
+            set
+            {
+                GVASData data = mGVAS.Key("FirstJobID");
+                SaveData.Instance().WriteNumber(data.Address, data.Size, value);
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FirstJob)));
+            }
+        }
 
 		public uint SecondJob
 		{
@@ -125,8 +127,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("SecondJobID");
 				SaveData.Instance().WriteNumber(data.Address, data.Size, value);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SecondJob)));
+            }
+        }
 
 		public uint JobPoint
 		{
@@ -139,8 +142,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("JobPoint");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 99999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(JobPoint)));
+            }
+        }
 
 		public uint HP
 		{
@@ -153,8 +157,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("HP");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(HP)));
+            }
+        }
 
 		public uint MP
 		{
@@ -167,8 +172,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("MP");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MP)));
+            }
+        }
 
 		public uint BP
 		{
@@ -181,8 +187,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("BP");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(BP)));
+            }
+        }
 
 		public uint SP
 		{
@@ -195,8 +202,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("SP");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SP)));
+            }
+        }
 
 		public uint ATK
 		{
@@ -209,8 +217,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("ATK");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ATK)));
+            }
+        }
 
 		public uint DEF
 		{
@@ -223,8 +232,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("DEF");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(DEF)));
+            }
+        }
 
 		public uint MATK
 		{
@@ -237,8 +247,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("MATK");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MATK)));
+            }
+        }
 
 		public uint MDEF
 		{
@@ -251,8 +262,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("MDEF");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(MDEF)));
+            }
+        }
 
 		public uint ACC
 		{
@@ -265,8 +277,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("ACC");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(ACC)));
+            }
+        }
 
 		public uint EVA
 		{
@@ -279,8 +292,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("EVA");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(EVA)));
+            }
+        }
 
 		public uint CON
 		{
@@ -293,8 +307,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("CON");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(CON)));
+            }
+        }
 
 		public uint AGI
 		{
@@ -307,8 +322,9 @@ namespace OctopathTraveler
 			{
 				GVASData data = mGVAS.Key("AGI");
 				Util.WriteNumber(data.Address, data.Size, value, 0, 9999);
-			}
-		}
+                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AGI)));
+            }
+        }
 
 		public uint Sword
 		{

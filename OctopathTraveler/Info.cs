@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Resources;
@@ -9,9 +10,9 @@ namespace OctopathTraveler
 {
     class Info
     {
-        public static string LoadedInfoFile { get; private set; }
+        public static string LoadedInfoFile { get; set; } = string.Empty;
 
-        private static Info mThis;
+        private static Info? mThis;
         public List<NameValueInfo> Items { get; private set; } = new List<NameValueInfo>();
         public List<InventoryItemInfo> ItemInventory { get; private set; } = new List<InventoryItemInfo>();
         public List<NameValueInfo> CharaNames { get; private set; } = new List<NameValueInfo>();
@@ -23,24 +24,24 @@ namespace OctopathTraveler
         public List<TameMonsterInfo> TameMonsters { get; private set; } = new List<TameMonsterInfo>();
         public List<TreasureStateInfo> TreasureStates { get; private set; } = new List<TreasureStateInfo>();
 
-        private Info() { }
-
-        public static Info Instance()
+        private Info()
         {
-            if (mThis == null)
-            {
-                mThis = new Info();
-                mThis.Init();
-            }
-            return mThis;
+            Init();
+        }
+
+        public static Info Instance() => mThis ??= new Info();
+
+        public static void Release()
+        {
+            mThis = null;
         }
 
         public static string GetNameOrID2Hex<TInfo>(List<TInfo> list, uint id) where TInfo : NameValueInfo, new()
         {
-            return id == 0 ? "0" : Search(list, id)?.Name ?? $"{id}(0x{id:X})";
+            return id == 0 ? string.Empty : Search(list, id)?.Name ?? $"{id}(0x{id:X})";
         }
 
-        public static TType Search<TType>(List<TType> list, uint id) where TType : NameValueInfo, new()
+        public static TType? Search<TType>(List<TType> list, uint id) where TType : NameValueInfo, new()
         {
             int min = 0;
             int max = list.Count;
@@ -90,7 +91,7 @@ namespace OctopathTraveler
                 if (isSpecificCulture && culture != null)
                 {
                     resourceSet = Resources.ResourceManager.GetResourceSet(culture, true, false);
-                    LoadedInfoFile = $"Info Excel: Embedded Resource, Language: {culture.NativeName}[{culture.Name}]";
+                    LoadedInfoFile = $"Info Excel: Embedded Resource, Language: {culture.Name}";
                 }
                 else
                 {
@@ -175,8 +176,11 @@ namespace OctopathTraveler
 
                 bool checkHeaderRow = true;
                 var rows = MiniExcel.Query(_stream, sheetName: sheet);
+                var invaildRows = new List<int>();
+                int rowIndex = 0;
                 foreach (var row in rows)
                 {
+                    rowIndex++;
                     if (checkHeaderRow)
                     {
                         if (!new TRowParser().CheckHeaderRow(row))
@@ -191,7 +195,13 @@ namespace OctopathTraveler
                     {
                         list.Add(parser);
                     }
+                    else
+                    {
+                        invaildRows.Add(rowIndex);
+                    }
                 }
+                if (invaildRows.Count > 0)
+                    Trace.WriteLine($"Invaild Row Count: {invaildRows.Count}, sheet: {sheet}, rows: {string.Join(", ", invaildRows)}");
             }
         }
     }
