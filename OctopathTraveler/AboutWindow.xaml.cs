@@ -53,7 +53,7 @@ namespace OctopathTraveler
             OpenURL("https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/issues");
         }
 
-        private void ButtonReportProblem_Click(object sender, RoutedEventArgs e)
+        private void ButtonReportIssues_Click(object sender, RoutedEventArgs e)
         {
             ReportIssue();
         }

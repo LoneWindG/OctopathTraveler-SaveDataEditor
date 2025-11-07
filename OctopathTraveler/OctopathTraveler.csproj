@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0-windows</TargetFramework>
+    <TargetFrameworks>net6.0-windows7.0;net9.0-windows7.0</TargetFrameworks>
     <OutputType>WinExe</OutputType>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <UseWindowsForms>False</UseWindowsForms>
     <UseWPF>true</UseWPF>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
@@ -10,6 +10,12 @@
     <AnalysisLevel>6.0</AnalysisLevel>
     <Nullable>enable</Nullable>
     <Configurations>Debug;Release</Configurations>
+    <RepositoryUrl>https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor</RepositoryUrl>
+    <AssemblyName>$(MSBuildProjectName)-SaveDataEditor</AssemblyName>
+    <AssemblyTitle>$(AssemblyName.Replace("-", " ").Replace("_", " "))</AssemblyTitle>
+    <Description>$(AssemblyTitle)</Description>
+    <Product>$(AssemblyTitle)</Product>
+    <Copyright>Copyright © 2018-2026</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <CheckForOverflowUnderflow>True</CheckForOverflowUnderflow>
@@ -28,7 +34,7 @@
     <Resource Include="Resource\SaveAsJson.png" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="MiniExcel" Version="1.30.2" />
+    <PackageReference Include="MiniExcel" Version="1.41.4" />
   </ItemGroup>
   <ItemGroup>
     <Compile Update="Properties\Resources.Designer.cs">
@@ -38,9 +44,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Properties\Resources.ja-JP.resx">
-      <Generator></Generator>
-    </EmbeddedResource>
     <EmbeddedResource Update="Properties\Resources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -54,4 +57,11 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+  <Target Name="RenamePublishedExecutable" AfterTargets="Publish">
+    <PropertyGroup>
+      <SourceFile>$(AssemblyName)$(PublishFileExtension)</SourceFile>
+      <DestinationFile>$(AssemblyName)$(PublishFileSuffix)$(PublishFileExtension)</DestinationFile>
+    </PropertyGroup>
+    <Move SourceFiles="$(PublishDir)\$(SourceFile)" DestinationFiles="$(PublishDir)\$(DestinationFile)" />
+  </Target>
 </Project>

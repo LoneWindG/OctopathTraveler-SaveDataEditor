@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OctopathTraveler"
+        xmlns:properties="clr-namespace:OctopathTraveler.Properties"
         mc:Ignorable="d"
-        Title="About" Height="265" Width="480">
+        Title="About" Height="265" Width="480" WindowStartupLocation="CenterScreen">
     <Grid>
         <StackPanel>
             <Label Content="Creater : カメムシ"/>
@@ -47,7 +48,7 @@
                     <TextBlock TextDecorations="Underline">Octopath Traveler : MONSTERS ID LIST - Google Sheets</TextBlock>
                 </Label>
             </StackPanel>
-            <Button FontWeight="Bold" Content="Report Problem" Width="150" Click="ButtonReportProblem_Click"/>
+            <Button FontWeight="Bold" Content="Report Issues" Width="150" Click="ButtonReportIssues_Click"/>
         </StackPanel>
     </Grid>
 </Window>
