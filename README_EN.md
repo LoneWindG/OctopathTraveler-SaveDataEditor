@@ -9,9 +9,9 @@
 ## Summary 
 
 Octopath Traveler game save modification for platforms such as Steam, Xbox PC, and Nintendo Switch
-* Original author: https://github.com/turtle-insect/OctopathTraveler
-* **Recommended**
-* The Gvas format save viewing tool written by the original https://github.com/turtle-insect/GvasViewer
+  * Original author: https://github.com/turtle-insect/OctopathTraveler
+  * **Recommended**
+    * The Gvas format save viewing tool written by the original https://github.com/turtle-insect/GvasViewer
 
 ## Language
 * READEME: [日本語](README_JA.md) [中文](README.md)
