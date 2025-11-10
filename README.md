@@ -13,9 +13,6 @@
 * **推荐**
   * 原作者写的UE引擎的Gvas格式存档的查看工具 https://github.com/turtle-insect/GvasViewer
 
-## 推荐
-原作者写的UE引擎的Gvas格式存档的查看工具 https://github.com/turtle-insect/GvasViewer
-
 ## 语言
 
 * READEME: [日本語](README_JA.md)    [English](README_EN.md)
