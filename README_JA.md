@@ -46,7 +46,7 @@ http://www.jp.square-enix.com/octopathtraveler
 
 ## 機能説明 (きのうせつめい)
 * **_機能に関する問題_**
-  * 疑問点や問題点がある場合は[issue](https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/issues)を立ててください
+  * 疑問点や問題点がある場合は[issue](https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/issues)を立ててください
 * [英語での説明](README_EN.md#Function-Description)を見る
 * [中国語での説明](README.md#功能说明)を見る
 
