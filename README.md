@@ -1,4 +1,4 @@
-# 八方旅人存档编辑器
+# 八方旅人存档修改器
 
 [![GitHub release](https://img.shields.io/github/v/release/LoneWindG/OctopathTraveler-SaveDataEditor?style=for-the-badge)](https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/releases/latest)
 [![GitHub all releases](https://img.shields.io/github/downloads/LoneWindG/OctopathTraveler-SaveDataEditor/total?style=for-the-badge&color=00B000)](https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/releases)
@@ -8,7 +8,7 @@
 
 ## 概要
 
-适用于Steam, Xbox PC, Nintendo Switch等平台的八方旅人游戏存档
+适用于Steam, Xbox PC, Nintendo Switch等平台的八方旅人游戏存档修改
 * 原作者: https://github.com/turtle-insect/OctopathTraveler
 * **推荐**
   * 原作者写的UE引擎的Gvas格式存档的查看工具 https://github.com/turtle-insect/GvasViewer
