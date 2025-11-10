@@ -43,10 +43,11 @@ https://www.square-enix-games.com/games/octopath-traveler
 * Windows 10 (64 bit)
 * Visual Studio 2022
 
-## Function Description (Translated from Chinese)
+## Function Description
 
 * **_Function Issues_**
   * If you have any questions or problems, please create new [issue](https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/issues).
+* This feature description was translated from Chinese using AI. See the [Original Description](README.md#功能说明) here.
 * Quick buttons (from left to right):
   * Open Save Button: When opening a save, it automatically backs up the opened save in the "OctopathTraveler Backup" folder in the current program directory. The backup file name is "Opened Save Name (including extension) - Save MD5".
   * Save Button: Overwrite the modified data to the opened save.
