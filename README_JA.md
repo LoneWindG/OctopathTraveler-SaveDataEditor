@@ -6,44 +6,49 @@
 [![Windows](https://img.shields.io/badge/PLATFORM-Windows-blueviolet?style=for-the-badge)](https://dotnet.microsoft.com/zh-cn/apps/desktop)
 [![.NET 6.0](https://img.shields.io/badge/.NET-6.0-%234122AA?style=for-the-badge)](https://dotnet.microsoft.com/zh-cn/download/dotnet/6.0)
 
-## Language
+## 概要 (がいよう)
 
+Steam、Xbox PC、Nintendo Switchなどのプラットフォームで利用可能なオクトパストラベラーのゲームセーブデータ編集
+* 原作者: [https://github.com/turtle-insect/OctopathTraveler](https://github.com/turtle-insect/OctopathTraveler)
+* **推奨**
+  * 原作者によるUEエンジンGvas形式セーブデータビューア [https://github.com/turtle-insect/GvasViewer](https://github.com/turtle-insect/GvasViewer)
+
+## 言語 (げんご)
 * READEME: [English](README_EN.md) [中文](README.md)
-* 対応言語：英語、簡体字中国語、日本語（一部対応）
-  * デフォルトの表示はシステム言語に基づきます。サポートされていない言語は英語で表示されます。
-  * 表示言語の強制：ショートカットを作成し、対象フィールドのファイルパスに「-language=言語エンコード」（ハイフンの前にスペースが必要です）を追加します。
-    * 対応言語エンコード（大文字と小文字は区別されません）：en（enで始まるすべてのエンコード、英語で表示）、zh-CN/zh_CN（簡体字中国語で表示）、ja-JP/ja_jp（日本語で表示）。
-
-## 概要
-
-Steam, Xbox PC, Nintendo Switch OCTOPATH TRAVELER(オクトパス トラベラー)のセーブデータ編集Tool
+* プログラム対応言語: 英語、簡体字中国語、日本語（一部のみ対応）
 
 ## ソフト
-
+https://octopathtraveler.nintendo.com/
 http://www.jp.square-enix.com/octopathtraveler
 
 ## 実行に必要
 
-* Windows マシン
-* [.NET デスクトップ ランタイム 6.0](https://dotnet.microsoft.com/download), [クリックダウンロード](https://aka.ms/dotnet/6.0/windowsdesktop-runtime-win-x64.exe)
-* セーブデータの吸い出し
-* セーブデータの書き戻し
+* Windowsオペレーティングシステム
+* [.NET Desktop Runtime 6.0](https://dotnet.microsoft.com/download/dotnet)、[ダウンロード](https://aka.ms/dotnet/6.0/windowsdesktop-runtime-win-x64.exe)
+* オクトパストラベラーのセーブファイル
+  * Nintendo Switch：本体からセーブデータをインポート/エクスポートする必要があります（公式システムではエクスポート不可）。
+    * SaveDataを吸い出す
+    * 結果、以下が取得可能
+      * KSSaveData1(KSSaveData2、KSSaveData3、、、)
+      * KSSystemData
+    * KSSaveData1(KSSaveData2、KSSaveData3、、、)を読み込む
+    * 任意の編集を行う
+    * KSSaveData1(KSSaveData2、KSSaveData3、、、)を書き出す
+    * SaveDataを書き戻す
+  * Steamのセーブデータパス：`%USERPROFILE%/Documents/My Games/Octopath_Traveler/(数字番号)/SaveGames`。`SaveGames`フォルダー内の`SaveData0`が**自動セーブ**に対応します。`SaveData1`/`2`/`3`はそれぞれ対応する順番のセーブデータです。
+  * Xbox PCのセーブデータパス：`%LOCALAPPDATA%/Packages/39EA002F.FrigateMS_n746a19ndrrjg/SystemAppData/wgs/(一連の英数字)/(一連の英数字)`。このフォルダー内にある1000KBから2000KB程度のファイルが、各セーブスロットのセーブデータファイルです。編集したいセーブデータをすぐに見つけるには、ゲーム内で一度セーブし、このディレクトリ内で**更新日時が最新**のファイルを確認してください。
+    * 特定のXbox PCゲームのセーブデータを素早くエクスポートするためのツールとして、[https://github.com/Tom60chat/Xbox-Live-Save-Exporter](https://github.com/Tom60chat/Xbox-Live-Save-Exporter)を推奨しますが、エクスポート時にファイル名が変換されるため、元のセーブデータと置き換える場合は、変換前後のファイル名を自身で照合する必要があります。
 
 ## Build環境
 
 * Windows 10 (64bit)
 * Visual Studio 2022
 
-## Nintendo Switch用編集の手順
-
-* SaveDataを吸い出す
-  * 結果、以下が取得可能
-    * KSSaveData1(KSSaveData2、KSSaveData3、、、)
-    * KSSystemData
-* KSSaveData1(KSSaveData2、KSSaveData3、、、)を読み込む
-* 任意の編集を行う
-* KSSaveData1(KSSaveData2、KSSaveData3、、、)を書き出す
-* SaveDataを書き戻す
+## 機能説明 (きのうせつめい)
+* **_機能に関する問題_**
+  * 疑問点や問題点がある場合は[issue](https://github.com/LoneWindG/OctopathTraveler-SaveDataEditor/issues)を立ててください
+* [英語での説明](README_EN.md#Function-Description)を見る
+* [中国語での説明](README.md#功能说明)を見る
 
 ## Special Thanks
 
