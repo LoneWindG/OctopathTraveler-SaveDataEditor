@@ -14,7 +14,7 @@ Steam、Xbox PC、Nintendo Switchなどのプラットフォームで利用可�
   * 原作者によるUEエンジンGvas形式セーブデータビューア [https://github.com/turtle-insect/GvasViewer](https://github.com/turtle-insect/GvasViewer)
 
 ## 言語 (げんご)
-* READEME: [English](README_EN.md) [中文](README.md)
+* README: [English](README_EN.md) [中文](README.md)
 * プログラム対応言語: 英語、簡体字中国語、日本語（一部のみ対応）
 
 ## ソフト
