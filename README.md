@@ -15,7 +15,7 @@
 
 ## 语言
 
-* READEME: [日本語](README_JA.md)    [English](README_EN.md)
+* README: [日本語](README_JA.md)    [English](README_EN.md)
 * 程序支持语言: 英语, 简体中文, 日语（仅部分支持）
 
 ## 游戏官网
